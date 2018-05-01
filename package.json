@@ -4,6 +4,7 @@
     "commit": "git-cz",
     "bootstrap": "lerna bootstrap",
     "test": "jest --coverage",
+    "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*"
   },
   "devDependencies": {
@@ -67,6 +68,12 @@
     },
     "testMatch": [
       "<rootDir>/**/*.spec.ts"
+    ],
+    "collectCoverageFrom": [
+      "packages/**/*.{js,ts}",
+      "!**/*.d.ts",
+      "!**/lib/**",
+      "!**/node_modules/**"
     ]
   }
 }
