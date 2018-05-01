@@ -9,5 +9,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "exclude": ["lib", "node_modules", "**/*/node_modules"],
+  "compileOnSave": false,
+  "buildOnSave": false
 }

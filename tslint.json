@@ -1,4 +1,6 @@
 {
+  "extends": ["rxjs-tslint-rules"],
+  "rulesDirectory": ["node_modules/rxjs-tslint"],
   "rules": {
     "class-name": true,
     "comment-format": [true, "check-space"],
@@ -30,6 +32,47 @@
       "check-operator",
       "check-separator",
       "check-type"
-    ]
+    ],
+    "deprecation": {
+      "severity": "warning"
+    },
+    "rxjs-no-internal": {
+      "severity": "error"
+    },
+    "rxjs-ban-observables": {
+      "options": [
+        {
+          "empty": "Use EMPTY",
+          "never": "Use NEVER"
+        }
+      ],
+      "severity": "error"
+    },
+    "rxjs-ban-operators": {
+      "options": [
+        {
+          "combineLatest": "Use the static combineLatest",
+          "concat": "Use the static concat",
+          "merge": "Use the static merge",
+          "race": "Use the static race",
+          "zip": "Use the static zip"
+        }
+      ],
+      "severity": "error"
+    },
+    "rxjs-no-subject-unsubscribe": {
+      "severity": "error"
+    },
+    "rxjs-no-subject-value": {
+      "severity": "error"
+    },
+    "rxjs-throw-error": {
+      "severity": "error"
+    },
+
+    "rxjs-collapse-imports": true,
+    "rxjs-pipeable-operators-only": true,
+    "rxjs-no-static-observable-methods": true,
+    "rxjs-proper-imports": true
   }
 }
