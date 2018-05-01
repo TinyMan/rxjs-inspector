@@ -15,17 +15,12 @@
   "name": "rxjs-inspector",
   "version": "0.0.0",
   "description": "monorepo for rxjs-inspector",
-  "main": "index.js",
   "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TinyMan/rxjs-inspector.git"
   },
-  "keywords": [
-    "rxjs",
-    "inspector",
-    "debug"
-  ],
+  "keywords": ["rxjs", "inspector", "debug"],
   "author": "TinyMan",
   "license": "MIT",
   "bugs": {
