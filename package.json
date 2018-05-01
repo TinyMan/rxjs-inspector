@@ -2,15 +2,19 @@
   "scripts": {
     "precommit": "lint-staged",
     "commit": "git-cz",
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "test": "jest --coverage"
   },
   "devDependencies": {
+    "@types/jest": "^22.2.3",
     "@types/node": "^10.0.1",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
+    "jest": "^22.4.3",
     "lerna": "^2.11.0",
     "lint-staged": "^7.0.5",
     "prettier": "^1.12.1",
+    "ts-jest": "^22.4.4",
     "tslint": "^5.9.1",
     "typescript": "^2.8.3"
   },
@@ -43,5 +47,17 @@
   "bugs": {
     "url": "https://github.com/TinyMan/rxjs-inspector/issues"
   },
-  "homepage": "https://github.com/TinyMan/rxjs-inspector#readme"
+  "homepage": "https://github.com/TinyMan/rxjs-inspector#readme",
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.ts$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": [
+      "<rootDir>/**/*.spec.ts"
+    ]
+  }
 }
