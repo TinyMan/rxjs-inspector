@@ -2,6 +2,9 @@
   "name": "@rxjs-inspector/core",
   "version": "0.0.1",
   "description": "Core features for rxjs-inspector",
+  "scripts": {
+    "build":"tsc -p tsconfig.build.json"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TinyMan/rxjs-inspector.git"
@@ -14,5 +17,7 @@
   "homepage": "https://github.com/TinyMan/rxjs-inspector#readme",
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts"
 }

@@ -5,7 +5,6 @@
 # Visual Studio Code - https://code.visualstudio.com/
 .settings/
 .vscode/
-tsconfig.json
 jsconfig.json
 
 ### Node ###
@@ -71,3 +70,5 @@ typings/
 
 
 # End of https://www.gitignore.io/api/node,code
+
+lib

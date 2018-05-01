@@ -1,11 +1,18 @@
 {
   "scripts": {
-    "commit": "git-cz"
+    "precommit": "lint-staged",
+    "commit": "git-cz",
+    "bootstrap": "lerna bootstrap"
   },
   "devDependencies": {
+    "@types/node": "^10.0.1",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
-    "lerna": "^2.11.0"
+    "lerna": "^2.11.0",
+    "lint-staged": "^7.0.5",
+    "prettier": "^1.12.1",
+    "tslint": "^5.9.1",
+    "typescript": "^2.8.3"
   },
   "config": {
     "commitizen": {
@@ -20,7 +27,17 @@
     "type": "git",
     "url": "git+https://github.com/TinyMan/rxjs-inspector.git"
   },
-  "keywords": ["rxjs", "inspector", "debug"],
+  "keywords": [
+    "rxjs",
+    "inspector",
+    "debug"
+  ],
+  "lint-staged": {
+    "*.{ts,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "author": "TinyMan",
   "license": "MIT",
   "bugs": {
