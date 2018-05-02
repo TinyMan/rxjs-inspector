@@ -2,16 +2,21 @@
   "scripts": {
     "precommit": "lint-staged",
     "commit": "git-cz",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "bootstrap": "lerna bootstrap",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*"
   },
   "devDependencies": {
+    "@commitlint/cli": "^6.2.0",
+    "@commitlint/config-conventional": "^6.1.3",
+    "@commitlint/config-lerna-scopes": "^6.1.3",
     "@types/jest": "^22.2.3",
     "@types/node": "^10.0.1",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.1.0",
+    "husky": "^0.14.3",
     "jest": "^22.4.3",
     "lerna": "^2.11.0",
     "lint-staged": "^7.0.5",
