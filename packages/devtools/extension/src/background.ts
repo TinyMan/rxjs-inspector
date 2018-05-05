@@ -1,4 +1,3 @@
-import { Connection } from './connection';
 import { ConnectionNames } from './enums';
 
 let panel: chrome.runtime.Port | undefined;
