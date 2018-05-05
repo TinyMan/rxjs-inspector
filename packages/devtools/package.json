@@ -1,0 +1,27 @@
+{
+  "name": "@rxjs-inspector/devtools",
+  "version": "0.0.0",
+  "description": "Rxjs Inspector devtools package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --config extension/webpack/webpack.dev.js --watch",
+    "build": "webpack --config extension/webpack/webpack.prod.js"
+  },
+  "keywords": [
+    "rxjs",
+    "inspector",
+    "devtools",
+    "debugger"
+  ],
+  "author": "TinyMan",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.5.1",
+    "ts-loader": "^4.2.0",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.1.2",
+    "webpack-merge": "^4.1.2"
+  }
+}

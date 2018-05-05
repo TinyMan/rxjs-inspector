@@ -1,0 +1,16 @@
+{
+  "background": {
+    "scripts": ["js/background.js"]
+  },
+  "content_scripts": [],
+  "devtools_page": "devtools.html",
+  "description":
+    "DevTools for inspecting and debugging RxJS applications (goes with @rxjs-inspector)",
+  "homepage_url": "https://github.com/TinyMan/rxjs-inspector",
+  "icons": {},
+  "manifest_version": 2,
+  "name": "RxJS Inspector DevTools",
+  "permissions": [],
+  "short_name": "RxJS Inspector DevTools",
+  "version": "0.0.0-PLACEHOLDER"
+}
