@@ -10,6 +10,10 @@
   "icons": {},
   "manifest_version": 2,
   "name": "RxJS Inspector DevTools",
+  "externally_connectable": {
+    "ids": ["*"],
+    "matches": ["*://localhost/*"]
+  },
   "permissions": [],
   "short_name": "RxJS Inspector DevTools",
   "version": "0.0.0-PLACEHOLDER"
