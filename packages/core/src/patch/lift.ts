@@ -18,7 +18,7 @@ export function lift(
     };
     setSymbol(patched, true, observableProto.lift);
     return () => {
-      Observable.prototype.lift = originalLift;
+      observableProto.lift = originalLift;
     };
   }
   return () => {};
