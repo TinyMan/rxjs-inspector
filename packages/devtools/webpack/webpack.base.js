@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const version = require('../../package.json').version;
+const version = require('../package.json').version;
 
 function setManifestVersion(content) {
   const manifest = JSON.parse(content);

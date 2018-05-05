@@ -10,8 +10,9 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  observableList$: Observable<ObservableRef[]>;
+  observableList$!: Observable<ObservableRef[]>;
 
+  // @ts-ignore
   constructor(private devtools: DevtoolsService) {}
   ngOnInit(): void {
     this.observableList$ = of([{ tag: 'observable-1' }]).pipe(

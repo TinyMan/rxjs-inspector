@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEventPattern } from 'rxjs';
 import { map, takeUntil, share } from 'rxjs/operators';
-import { MessageHandler } from '@devtools/types';
-import { ConnectionNames } from '@devtools/enums';
+import { MessageHandler, ConnectionNames } from '@rxjs-inspector/devtools';
 
 /**
  * Return an observable wrapping the given chrome event
  * @param event the chrome event to observe
  */
-function observeChromeEvent(event: chrome.events.Event<MessageHandler>) {
+function observeChromeEvent(
+  event: chrome.events.Event<MessageHandler>
+): Observable<[any, chrome.runtime.Port]> {
   return fromEventPattern(
-    (h: MessageHandler) => event.addListener(h),
-    (h: MessageHandler) => event.removeListener(h)
+    h => event.addListener(h as MessageHandler),
+    h => event.removeListener(h as MessageHandler)
   );
 }
 
-const EXT_ID = 'jjcoemihehbckckmokanloalbncficgk';
+const EXT_ID = 'ikbpcnbldccnepheoagfjgcigncidfbp';
 @Injectable({
   providedIn: 'root',
 })
