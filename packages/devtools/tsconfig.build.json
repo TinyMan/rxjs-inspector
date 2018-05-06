@@ -3,7 +3,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "lib",
-    "types": []
+    "types": [],
+    "baseUrl": ".",
+    "paths": {
+      "@rxjs-inspector/*": ["../*/lib"]
+    }
   },
   "exclude": ["node_modules", "**/*.spec.ts", "lib"]
 }

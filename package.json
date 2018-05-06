@@ -125,7 +125,12 @@
     ],
     "testPathIgnorePatterns": [
       "/demo-app/",
-      "/panel"
-    ]
+      "/panel/",
+      "/extension/"
+    ],
+    "moduleNameMapper": {
+      "^@rxjs-inspector/([^/]+)(/.+)": "<rootDir>/packages/$1/src$2",
+      "^@rxjs-inspector/(.*)": "<rootDir>/packages/$1/src"
+    }
   }
 }

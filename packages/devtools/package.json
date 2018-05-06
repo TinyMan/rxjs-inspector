@@ -1,6 +1,6 @@
 {
   "name": "@rxjs-inspector/devtools",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Rxjs Inspector devtools package",
   "scripts": {
     "build":"tsc -p tsconfig.build.json"
@@ -12,9 +12,13 @@
   ],
   "author": "TinyMan",
   "license": "MIT",
-  "private": true,
-  "devDependencies": {},
+  "devDependencies": {
+    "@rxjs-inspector/core": "^0.0.1"
+  },
   "dependencies": {},
+  "peerDependencies": {
+    "@rxjs-inspector/core": "^0.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TinyMan/rxjs-inspector.git"
