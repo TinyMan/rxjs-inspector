@@ -7,7 +7,7 @@ import {
   Subscriber,
 } from 'rxjs';
 import { share, refCount, publish } from 'rxjs/operators';
-import { tag } from '../util';
+import { tag, identify } from '../util';
 import { tag as tagOperator } from '../operators';
 
 export const subscribe_patched = Symbol();
@@ -20,9 +20,9 @@ export const enum NotificationKind {
   Unsubscribe = 'U',
 }
 export interface Notif {
-  observable: Observable<any>;
+  observable?: Observable<any>;
   tag?: string | symbol;
-  id?: string;
+  id: string;
   kind: NotificationKind;
   value?: any;
 }
@@ -42,6 +42,7 @@ export class Wrapper<T> extends Subscriber<T> {
   private notifyHook(kind: NotificationKind, value?: any) {
     this.hook.next({
       observable: this.observable,
+      id: identify(this.observable),
       kind,
       tag: tag(this.observable),
       value,

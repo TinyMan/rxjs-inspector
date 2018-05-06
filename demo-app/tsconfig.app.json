@@ -12,7 +12,8 @@
     "module": "es2015",
     "types": [],
     "paths": {
-      "@rxjs-inspector/core/*": ["../packages/core/src/*"]
+      "@rxjs-inspector/core/*": ["../packages/core/src/*"],
+      "@rxjs-inspector/*": ["../packages/*/src"]
     }
   },
   "exclude": ["src/test.ts", "**/*.spec.ts"]

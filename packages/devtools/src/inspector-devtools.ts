@@ -27,7 +27,7 @@ export class InspectorDevtools {
       this.window.dispatchEvent(
         new CustomEvent(this.extension.namespace, {
           detail: {
-            notif,
+            notif: { ...notif, observable: undefined },
             type: EventType.NOTIF,
           },
         })

@@ -4,7 +4,7 @@
   },
   "content_scripts": [
     {
-      "js": ["js/content_script.js"],
+      "js": ["js/content_script.js", "js/vendor.js"],
       "matches": ["<all_urls>"],
       "run_at": "document_start"
     }

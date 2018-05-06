@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { interval } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { tag } from '@rxjs-inspector/core/operators';
 
 @Component({
@@ -14,7 +14,7 @@ export class AppComponent {
     const obs = interval(1000);
 
     obs
-      .pipe(tag('time'), map(n => (n * 2) % 100))
+      .pipe(take(1), tag('time'), map(n => (n * 2) % 100))
       .subscribe(a => console.log(a));
   }
 }

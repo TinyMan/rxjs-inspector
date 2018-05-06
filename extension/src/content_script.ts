@@ -27,7 +27,7 @@ window.addEventListener(
     const messageHandler = (message: any) =>
       console.log('Message received from bg', message);
     return ((message: Message) => {
-      console.log('Received message from injected script', message);
+      console.log('Received message from injected script', message.detail);
       if (message.detail.type === EventType.INIT) {
         if (port) {
           port.disconnect();
