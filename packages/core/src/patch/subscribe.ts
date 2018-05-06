@@ -5,12 +5,14 @@ import {
   Subscription,
   PartialObserver,
   Subscriber,
+  Operator,
 } from 'rxjs';
 import { share, refCount, publish } from 'rxjs/operators';
 import { tag, identify } from '../util';
 import { tag as tagOperator } from '../operators';
+import { lift } from './lift';
 
-export const subscribe_patched = Symbol();
+export const subscribe_patched = 'dhfbksjhgfjdgfskjhfgskdhgsk'; // Symbol();
 
 export const enum NotificationKind {
   Next = 'N',
@@ -25,6 +27,8 @@ export interface Notif {
   id: string;
   kind: NotificationKind;
   value?: any;
+  source?: string;
+  operatorName?: string;
 }
 
 export class Wrapper<T> extends Subscriber<T> {
@@ -46,24 +50,30 @@ export class Wrapper<T> extends Subscriber<T> {
       kind,
       tag: tag(this.observable),
       value,
+      source: this.observable.source
+        ? identify(this.observable.source)
+        : undefined,
+      operatorName: this.observable.operator
+        ? this.observable.operator.constructor.name
+        : undefined,
     });
   }
   _next(value: T) {
-    this.destination.next && this.destination.next(value);
     this.notifyHook(NotificationKind.Next, value);
+    this.destination.next && this.destination.next(value);
   }
   _error(err: any) {
-    this.destination.error && this.destination.error(err);
     this.notifyHook(NotificationKind.Error, err);
+    this.destination.error && this.destination.error(err);
   }
   _complete() {
-    this.destination.complete && this.destination.complete();
     this.notifyHook(NotificationKind.Complete);
+    this.destination.complete && this.destination.complete();
   }
 
   unsubscribe() {
-    super.unsubscribe();
     this.notifyHook(NotificationKind.Unsubscribe);
+    super.unsubscribe();
   }
 }
 
@@ -73,23 +83,29 @@ export function patch(
   }
 ) {
   if (!proto.hasOwnProperty(subscribe_patched)) {
+    lift(proto, { inheritTags: true });
     const original = proto.subscribe;
     proto[subscribe_patched] = new Observable<Notif>(subscriber => {
+      let hidden = false;
       proto.subscribe = function subscribe<T>(
         this: Observable<T>,
         ...args: any[]
       ): Subscription {
         let wrapper: any[];
-        if (tag(this) !== subscribe_patched) {
+        if (!hidden && tag(this) !== subscribe_patched) {
           wrapper = [new Wrapper(this, subscriber, ...args)];
-        } else wrapper = args;
+        } else {
+          hidden = true;
+          wrapper = args;
+        }
         const sink = original.apply(this, wrapper) as Subscriber<T>;
+        hidden = false;
         return sink;
       };
       return () => {
         proto.subscribe = original;
       };
-    }).pipe(tagOperator(subscribe_patched), publish(), refCount());
+    }).pipe(publish(), refCount(), tagOperator(subscribe_patched));
   }
   return proto[subscribe_patched]!;
 }
