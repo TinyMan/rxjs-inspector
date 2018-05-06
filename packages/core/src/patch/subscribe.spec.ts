@@ -69,12 +69,14 @@ describe('subscribe', () => {
     test('should notify on next', async () => {
       let obs: Observable<number>;
       const promise = new Promise(resolve => {
-        patch(Observable.prototype).subscribe((notif: Notif) => {
-          expect(notif.kind).toBe('N');
-          expect(notif.observable).toBe(obs);
-          expect(notif.value).toBe(0);
-          resolve();
-        });
+        patch(Observable.prototype)
+          .pipe(filter(n => n.kind === 'N'))
+          .subscribe((notif: Notif) => {
+            expect(notif.kind).toBe('N');
+            expect(notif.observable).toBe(obs);
+            expect(notif.value).toBe(0);
+            resolve();
+          });
       });
       obs = of(0);
       obs.subscribe();
@@ -85,12 +87,14 @@ describe('subscribe', () => {
       let obs: Observable<number>;
       const error = new Error();
       const promise = new Promise(resolve => {
-        patch(Observable.prototype).subscribe((notif: Notif) => {
-          expect(notif.kind).toBe('E');
-          expect(notif.observable).toBe(obs);
-          expect(notif.value).toBe(error);
-          resolve();
-        });
+        patch(Observable.prototype)
+          .pipe(filter(n => n.kind === 'E'))
+          .subscribe((notif: Notif) => {
+            expect(notif.kind).toBe('E');
+            expect(notif.observable).toBe(obs);
+            expect(notif.value).toBe(error);
+            resolve();
+          });
       });
       obs = throwError(error);
       obs.subscribe();
@@ -112,6 +116,39 @@ describe('subscribe', () => {
       });
       obs = of(0);
       obs.subscribe({ complete });
+      return await promise;
+    });
+    test('should notify on subscribe', async () => {
+      let obs: Observable<number>;
+      const promise = new Promise(resolve => {
+        patch(Observable.prototype)
+          .pipe(filter(n => n.kind === 'S'))
+          .subscribe(notif => {
+            expect(notif.kind).toBe('S');
+            expect(notif.observable).toBe(obs);
+            expect(notif.value).toBe(undefined);
+            resolve();
+          });
+      });
+      obs = of(0);
+      obs.subscribe();
+      return await promise;
+    });
+    test('should notify on unsubscribe', async () => {
+      let obs: Observable<number>;
+      const promise = new Promise(resolve => {
+        patch(Observable.prototype)
+          .pipe(filter(n => n.kind === 'U'))
+          .subscribe(notif => {
+            expect(notif.kind).toBe('U');
+            expect(notif.observable).toBe(obs);
+            expect(notif.value).toBe(undefined);
+            resolve();
+          });
+      });
+      obs = of(0);
+      const sub = obs.subscribe();
+      sub.unsubscribe();
       return await promise;
     });
   });

@@ -27,6 +27,10 @@ export class Wrapper<T> extends Subscriber<T> {
     complete?: () => void
   ) {
     super(destinationOrNext, error, complete);
+    this.hook.next({
+      kind: 'S',
+      observable: this.observable,
+    });
   }
   _next(value: T) {
     this.destination.next && this.destination.next(value);
@@ -54,6 +58,10 @@ export class Wrapper<T> extends Subscriber<T> {
 
   unsubscribe() {
     super.unsubscribe();
+    this.hook.next({
+      kind: 'U',
+      observable: this.observable,
+    });
   }
 }
 
