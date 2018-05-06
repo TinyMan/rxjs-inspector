@@ -15,6 +15,7 @@ export interface Notif {
   tag?: string;
   id?: string;
   kind: 'N' | 'E' | 'C' | 'S' | 'U';
+  value?: any;
 }
 
 export class Wrapper<T> extends Subscriber<T> {
@@ -28,29 +29,35 @@ export class Wrapper<T> extends Subscriber<T> {
     super(destinationOrNext, error, complete);
   }
   _next(value: T) {
+    this.destination.next && this.destination.next(value);
     this.hook.next({
       observable: this.observable,
       kind: 'N',
+      value,
     });
-    this.destination.next!(value);
   }
   _error(err: any) {
+    this.destination.error && this.destination.error(err);
     this.hook.next({
       observable: this.observable,
       kind: 'E',
+      value: err,
     });
-    this.destination.error!(err);
   }
   _complete() {
+    this.destination.complete && this.destination.complete();
     this.hook.next({
       observable: this.observable,
       kind: 'C',
     });
-    this.destination.complete!();
+  }
+
+  unsubscribe() {
+    super.unsubscribe();
   }
 }
 
-export function subscribe(
+export function patch(
   proto: typeof Observable.prototype & {
     [subscribe_patched]?: Observable<Notif>;
   }
