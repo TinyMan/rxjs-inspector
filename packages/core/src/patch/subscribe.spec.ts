@@ -1,4 +1,4 @@
-import { patch, Notif } from './subscribe';
+import { patch, Notif, NotificationKind } from './subscribe';
 import { Observable, of, throwError, Subject, EMPTY } from 'rxjs';
 import {
   map,
@@ -9,6 +9,7 @@ import {
   skip,
   filter,
 } from 'rxjs/operators';
+import { tag } from '../operators';
 
 describe('subscribe', () => {
   let proto: typeof Observable.prototype;
@@ -150,6 +151,45 @@ describe('subscribe', () => {
       const sub = obs.subscribe();
       sub.unsubscribe();
       return await promise;
+    });
+
+    test('should correctly report the tag', async () => {
+      let obs: Observable<number>;
+      const specialTag = 'special tag';
+      const next = jest.fn();
+      return await new Promise(resolve => {
+        patch(Observable.prototype).subscribe(next);
+        obs = of(0).pipe(tag(specialTag));
+        obs.subscribe({
+          complete() {
+            setImmediate(() => {
+              expect(next).toHaveBeenCalledTimes(4);
+              expect(next).toHaveBeenCalledWith({
+                observable: obs,
+                tag: specialTag,
+                kind: NotificationKind.Next,
+                value: 0,
+              } as Notif);
+              expect(next).toHaveBeenCalledWith({
+                observable: obs,
+                tag: specialTag,
+                kind: NotificationKind.Complete,
+              } as Notif);
+              expect(next).toHaveBeenCalledWith({
+                observable: obs,
+                tag: specialTag,
+                kind: NotificationKind.Unsubscribe,
+              } as Notif);
+              expect(next).toHaveBeenCalledWith({
+                observable: obs,
+                tag: specialTag,
+                kind: NotificationKind.Subscribe,
+              } as Notif);
+              resolve();
+            });
+          },
+        });
+      });
     });
   });
 });
