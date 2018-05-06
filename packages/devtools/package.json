@@ -2,19 +2,30 @@
   "name": "@rxjs-inspector/devtools",
   "version": "0.0.0",
   "description": "Rxjs Inspector devtools package",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build":"tsc -p tsconfig.build.json"
   },
   "keywords": [
     "rxjs",
     "inspector",
-    "devtools",
-    "debugger"
+    "devtools"
   ],
   "author": "TinyMan",
   "license": "MIT",
   "private": true,
   "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TinyMan/rxjs-inspector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TinyMan/rxjs-inspector/issues"
+  },
+  "homepage": "https://github.com/TinyMan/rxjs-inspector#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts"
 }

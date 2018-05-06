@@ -1,4 +1,4 @@
-import { ConnectionNames } from './enums';
+import { ConnectionNames } from '@rxjs-inspector/devtools';
 
 let panel: chrome.runtime.Port | undefined;
 let content_script: chrome.runtime.Port | undefined;

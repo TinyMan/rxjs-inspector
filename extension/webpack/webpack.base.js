@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const version = require('../package.json').version;
+const version = require('../../package.json').version;
 
 function setManifestVersion(content) {
   const manifest = JSON.parse(content);
@@ -18,7 +18,7 @@ module.exports = {
     content_script: path.join(__dirname, '../src/content_script.ts'),
   },
   output: {
-    path: path.join(__dirname, '../lib'),
+    path: path.join(__dirname, '../../lib/extension'),
     filename: 'js/[name].js',
   },
   optimization: {
@@ -37,6 +37,9 @@ module.exports = {
     ],
   },
   resolve: {
+    alias: {
+      '@rxjs-inspector/devtools': '../../src',
+    },
     extensions: ['.ts', '.tsx', '.js'],
   },
   plugins: [

@@ -1,5 +1,4 @@
-import { ConnectionNames, EventType } from './enums';
-console.log('ok');
+import { ConnectionNames, EventType } from '@rxjs-inspector/devtools';
 
 const NAMESPACE =
   chrome.runtime.id +
