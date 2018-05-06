@@ -1,8 +1,8 @@
 import { InspectorDevtools } from './inspector-devtools';
 
-export * from './enums';
+export * from './constants';
 export * from './types';
 
 export function createInspectorDevtools() {
-  return new InspectorDevtools();
+  return new InspectorDevtools(window);
 }

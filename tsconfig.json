@@ -1,9 +1,16 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "types": ["jest"],
     "baseUrl": "./packages",
     "paths": {
       "@rxjs-inspector/*": ["./*/src"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-snapshots-plugin",
+        "snapshotCallIdentifiers": ["toMatchSnapshot"]
+      }
+    ]
   }
 }

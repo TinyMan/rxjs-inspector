@@ -38,7 +38,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@rxjs-inspector/devtools': '../../src',
+      '@rxjs-inspector/devtools': '../../packages/devtools/src',
     },
     extensions: ['.ts', '.tsx', '.js'],
   },

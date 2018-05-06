@@ -1,4 +1,9 @@
-import { ConnectionNames, EventType } from '@rxjs-inspector/devtools';
+import {
+  ConnectionNames,
+  EventType,
+  EXTENSION_KEY,
+  DevtoolsHook,
+} from '@rxjs-inspector/devtools';
 
 const NAMESPACE =
   chrome.runtime.id +
@@ -7,7 +12,6 @@ const NAMESPACE =
     .toString()
     .split('.')[1]
     .substr(0, 6);
-const EXTENSION_KEY = '__RXJS_INSPECTOR_EXTENSION__';
 
 interface Message extends CustomEvent {
   detail: {
@@ -50,7 +54,7 @@ function setup(window: Window, namespace: string, key: string) {
   Object.defineProperty(window, key, {
     value: {
       namespace,
-    },
+    } as DevtoolsHook,
   });
 }
 
