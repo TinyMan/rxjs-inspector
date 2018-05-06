@@ -10,6 +10,7 @@ import {
   filter,
 } from 'rxjs/operators';
 import { tag } from '../operators';
+import { identify } from '../util';
 
 describe('subscribe', () => {
   let proto: typeof Observable.prototype;
@@ -44,7 +45,7 @@ describe('subscribe', () => {
             bufferCount(3),
             map(values => expect(values).toEqual([1, 2, 3]))
           )
-          .subscribe(resolve)
+          .subscribe(() => resolve())
       );
     });
     it('should not break error', async () => {
@@ -169,21 +170,25 @@ describe('subscribe', () => {
                 tag: specialTag,
                 kind: NotificationKind.Next,
                 value: 0,
+                id: identify(obs),
               } as Notif);
               expect(next).toHaveBeenCalledWith({
                 observable: obs,
                 tag: specialTag,
                 kind: NotificationKind.Complete,
+                id: identify(obs),
               } as Notif);
               expect(next).toHaveBeenCalledWith({
                 observable: obs,
                 tag: specialTag,
                 kind: NotificationKind.Unsubscribe,
+                id: identify(obs),
               } as Notif);
               expect(next).toHaveBeenCalledWith({
                 observable: obs,
                 tag: specialTag,
                 kind: NotificationKind.Subscribe,
+                id: identify(obs),
               } as Notif);
               resolve();
             });
