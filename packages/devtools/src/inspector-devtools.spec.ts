@@ -10,12 +10,14 @@ describe('InspectorDevtools', () => {
       value: {
         namespace: 'test-namespace',
       },
+      configurable: true,
     });
   });
   afterEach(() => {
     Object.assign(Observable.prototype, {}, proto);
     Object.defineProperty(window, EXTENSION_KEY, {
       value: undefined,
+      configurable: true,
     });
   });
   it('should construct', () => {
