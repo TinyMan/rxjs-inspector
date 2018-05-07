@@ -12,7 +12,7 @@ import { tag, identify } from '../util';
 import { tag as tagOperator } from '../operators';
 import { lift } from './lift';
 
-export const subscribe_patched = 'dhfbksjhgfjdgfskjhfgskdhgsk'; // Symbol();
+export const subscribe_patched = Symbol('subscribe patch');
 
 export const enum NotificationKind {
   Next = 'N',
