@@ -76,8 +76,13 @@
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
+    "@ngrx/effects": "^5.2.0",
+    "@ngrx/entity": "^5.2.0",
+    "@ngrx/store": "^5.2.0",
     "core-js": "^2.5.4",
+    "immutable": "^3.8.2",
     "rxjs": "^6.0.0",
+    "ts-action": "^6.0.2",
     "zone.js": "^0.8.26"
   },
   "repository": {
