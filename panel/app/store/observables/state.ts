@@ -1,6 +1,7 @@
 import { Notif } from '@rxjs-inspector/core';
 import { List } from 'immutable';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import { createFeatureSelector } from '@ngrx/store';
 
 export interface ObservableState {
   id: string;
@@ -18,3 +19,11 @@ export const adapter = createEntityAdapter<ObservableState>();
 export const initialState: ObservablesState = adapter.getInitialState({
   history: List<Notif>(),
 });
+
+export const selectObservablesState = createFeatureSelector<ObservablesState>(
+  'observables'
+);
+
+export const { selectAll: getAllObservables } = adapter.getSelectors(
+  selectObservablesState
+);

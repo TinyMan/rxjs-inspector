@@ -1,3 +1,5 @@
-<p>
-  observable-list works!
-</p>
+<ul *ngIf="(observables$ | async)?.length">
+  <li *ngFor="let obs of observables$ | async">
+    {{ obs.tag}}, {{ obs.source }}, {{ obs.operator }}, {{ obs.value }}
+  </li>
+</ul>
