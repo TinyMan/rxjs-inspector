@@ -3,6 +3,8 @@ language:
 node_js:
   - 10
   - 8
+notifications:
+  email: false
 install:
   - npm install
   - lerna bootstrap --ci
