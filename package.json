@@ -3,13 +3,13 @@
     "precommit": "lint-staged",
     "commit": "git-cz",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --hoist",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*",
-    "watch:extension": "webpack --watch --config extension/webpack/webpack.dev.js",
-    "build:extension": "webpack --config extension/webpack/webpack.prod.js",
-    "build:panel": "ng build panel",
+    "watch:extension": "lerna run start --scope @rxjs-inspector/extension",
+    "build:extension": "lerna run build --scope @rxjs-inspector/extension --include-filtered-dependencies",
+    "build:panel": "lerna run build --scope @rxjs-inspector/panel --include-filtered-dependencies",
     "watch:panel": "ng serve panel",
     "build:demo": "ng build demo-app",
     "watch:demo": "ng serve demo-app"
@@ -127,12 +127,14 @@
       "!**/*.d.ts",
       "!**/lib/**",
       "!**/node_modules/**",
-      "!**/webpack*.js"
+      "!**/webpack*.js",
+      "!packages/panel/**/*",
+      "!packages/extension/**/*"
     ],
     "testPathIgnorePatterns": [
       "/demo-app/",
-      "/panel/",
-      "/extension/"
+      "packages/panel/",
+      "packages/extension/"
     ],
     "moduleNameMapper": {
       "^@rxjs-inspector/([^/]+)(/.+)": "<rootDir>/packages/$1/src$2",
