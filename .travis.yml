@@ -10,8 +10,6 @@ install:
 script:
   - npm test
   - lerna run build
-  - npm run build:extension
-  - npm run build:panel
   - npm run build:demo
 after_success:
   - codecov
