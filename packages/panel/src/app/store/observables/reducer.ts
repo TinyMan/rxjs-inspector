@@ -15,7 +15,7 @@ export const reduce = reducer<ObservablesState>(
   [
     on(Actions.Notification, (state: ObservablesState, { payload }) => ({
       ...adapter.upsertOne(createUpdateStmt(payload), state),
-      history: state.history.push(payload),
+      // history: state.history.push(payload),
     })),
   ],
   initialState

@@ -1,0 +1,22 @@
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border-bottom: 1px solid grey;
+  width: auto;
+  cursor: pointer;
+}
+ul li:hover {
+  background-color: aliceblue;
+}
+ul li span {
+  padding-left: 10px;
+}
+ul li span:first-child {
+  padding: 0;
+}

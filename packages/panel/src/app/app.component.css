@@ -1,0 +1,10 @@
+:host {
+  display: grid;
+  grid-template-columns: 15% auto;
+}
+app-observable-list {
+  grid-column: 1;
+}
+app-graph {
+  grid-column: 2;
+}
