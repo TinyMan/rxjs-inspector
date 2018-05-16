@@ -56,6 +56,11 @@ module.exports = {
           context: '../assets',
           from: '**/*',
         },
+        {
+          context: '../node_modules/@rxjs-inspector/panel/lib',
+          from: '**/*',
+          to: '../lib/panel',
+        },
       ],
       { context: __dirname }
     ),

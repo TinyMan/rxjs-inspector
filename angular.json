@@ -148,7 +148,9 @@
               "packages/panel/src/assets"
             ],
             "styles": ["packages/panel/src/styles.css"],
-            "scripts": []
+            "scripts": [],
+            "aot": true,
+            "baseHref": "panel"
           },
           "configurations": {
             "production": {
@@ -166,7 +168,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "baseHref": "panel"
             }
           }
         },

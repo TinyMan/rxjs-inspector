@@ -9,17 +9,13 @@ import { ObservableListComponent } from './components/observable-list/observable
 import { reducers } from './store';
 import { environment } from '../environments/environment';
 
-const additionalModules: any[] = [];
-if (
-  !environment.production &&
-  (typeof chrome === 'undefined' || !chrome || !chrome.devtools)
-) {
-  additionalModules.push(StoreDevtoolsModule.instrument());
-}
-
 @NgModule({
   declarations: [AppComponent, ObservableListComponent],
-  imports: [BrowserModule, StoreModule.forRoot(reducers), ...additionalModules],
+  imports: [
+    BrowserModule,
+    StoreModule.forRoot(reducers),
+    environment.production ? [] : StoreDevtoolsModule.instrument(),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

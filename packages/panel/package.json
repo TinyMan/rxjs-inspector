@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start":"ng serve panel",
-    "build":"ng build panel",
+    "build":"ng build panel ",
     "test":"ng test panel"
   },
   "keywords": [

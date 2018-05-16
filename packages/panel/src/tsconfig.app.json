@@ -11,5 +11,5 @@
     "lib": ["es2017", "dom"],
     "module": "es2015"
   },
-  "exclude": ["src/test.ts", "**/*.spec.ts"]
+  "exclude": ["test.ts", "**/*.spec.ts"]
 }
