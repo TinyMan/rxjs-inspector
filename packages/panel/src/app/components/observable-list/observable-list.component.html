@@ -1,5 +1,5 @@
 <ul *ngIf="(observables$ | async)?.length">
-  <li *ngFor="let obs of observables$ | async; trackBy: trackById">
+  <li *ngFor="let obs of observables$ | async; trackBy: trackById" (click)="selectObs(obs.id)">
     <span>{{ obs.id }}</span>
     <span>{{ obs.tag }}</span>
     <span>{{ obs.operator }}</span>

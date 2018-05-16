@@ -22,3 +22,19 @@ export const selectAllObservables = createSelector(
   selectObservablesState,
   fromObservables.getAllObservables
 );
+
+export const selectObservableEntities = createSelector(
+  selectObservablesState,
+  fromObservables.selectObservableEntities
+);
+
+export const selectCurrentObservableId = createSelector(
+  selectObservablesState,
+  fromObservables.getSelectedObservableId
+);
+
+export const selectCurrentObservable = createSelector(
+  selectObservableEntities,
+  selectCurrentObservableId,
+  (entities, id) => entities[id!]
+);

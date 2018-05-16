@@ -8,13 +8,16 @@ import { AppComponent } from './app.component';
 import { ObservableListComponent } from './components/observable-list/observable-list.component';
 import { reducers } from './store';
 import { environment } from '../environments/environment';
+import { ObservableComponent } from './components/observable/observable.component';
 
 @NgModule({
-  declarations: [AppComponent, ObservableListComponent],
+  declarations: [AppComponent, ObservableListComponent, ObservableComponent],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
-    environment.production ? [] : StoreDevtoolsModule.instrument(),
+    environment.production
+      ? []
+      : StoreDevtoolsModule.instrument({ maxAge: 10 }),
   ],
   providers: [],
   bootstrap: [AppComponent],

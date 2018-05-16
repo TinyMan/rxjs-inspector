@@ -3,14 +3,17 @@ import { Action } from '@ngrx/store';
 
 export enum ActionsTypes {
   Notification = '[Devtools] Notification',
-  Notification1 = '[Devtools] Notification1',
+  SelectObservable = '[Observable List] Select Observable',
 }
 export class NotificationAction implements Action {
   readonly type = ActionsTypes.Notification;
   constructor(public readonly payload: Notif) {}
 }
-export class Notification1Action implements Action {
-  readonly type = ActionsTypes.Notification1;
+export class SelectObservableAction implements Action {
+  readonly type = ActionsTypes.SelectObservable;
+  constructor(public payload: string) {}
 }
 
-export type ObservableActionsUnion = NotificationAction | Notification1Action;
+export type ObservableActionsUnion =
+  | NotificationAction
+  | SelectObservableAction;

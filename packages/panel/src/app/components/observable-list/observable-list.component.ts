@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ObservableState } from '../../store/observables';
 import { share, map } from 'rxjs/operators';
 import { selectAllObservables } from '../../store';
+import { SelectObservableAction } from '../../store/observables/action';
 
 @Component({
   selector: 'app-observable-list',
@@ -22,5 +23,8 @@ export class ObservableListComponent implements OnInit {
   ngOnInit() {}
   public trackById(i: number, e: { id: any }) {
     return e.id;
+  }
+  public selectObs(id: string) {
+    this.store.dispatch(new SelectObservableAction(id));
   }
 }

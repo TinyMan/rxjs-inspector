@@ -14,11 +14,13 @@ export interface ObservableState {
 
 export interface State extends EntityState<ObservableState> {
   history: List<Notif>;
+  selectedObservableId: string | null;
 }
 
 export const adapter = createEntityAdapter<ObservableState>();
 export const initialState: State = adapter.getInitialState({
   history: List<Notif>(),
+  selectedObservableId: null,
 });
 
 export function reducer(
@@ -28,7 +30,11 @@ export function reducer(
   switch (action.type) {
     case ActionsTypes.Notification:
       return adapter.upsertOne(createUpdateStmt(action.payload), state);
-
+    case ActionsTypes.SelectObservable:
+      return {
+        ...state,
+        selectedObservableId: action.payload,
+      };
     default:
       return state;
   }
@@ -47,4 +53,9 @@ export function createUpdateStmt(notif: Notif): Update<ObservableState> {
   };
 }
 
-export const { selectAll: getAllObservables } = adapter.getSelectors();
+export const {
+  selectAll: getAllObservables,
+  selectEntities: selectObservableEntities,
+} = adapter.getSelectors();
+export const getSelectedObservableId = (state: State) =>
+  state.selectedObservableId;
