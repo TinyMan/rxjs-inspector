@@ -1,0 +1,3 @@
+<div class="marble-view">
+  <app-observable [observable]="obs" *ngFor="let obs of previousObservables$ | async; trackBy: trackById"></app-observable>
+</div>

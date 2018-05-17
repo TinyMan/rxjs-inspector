@@ -1,11 +1,15 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DevtoolsService } from './services/devtools/devtools.service';
 import { Observable, of } from 'rxjs';
-import { ObservableRef } from '@rxjs-inspector/core';
 import { tap } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 import { ObservableState } from './store/observables';
-import { selectCurrentObservable } from './store';
+import {
+  selectCurrentObservable,
+  selectCurrentObservableHistory,
+} from './store';
+import { List } from 'immutable';
+import { Notif } from '@rxjs-inspector/core';
 
 @Component({
   selector: 'app-root',
@@ -14,9 +18,9 @@ import { selectCurrentObservable } from './store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  selectedObservable$: Observable<ObservableState>;
-  constructor(private devtools: DevtoolsService, private store: Store<Action>) {
-    this.selectedObservable$ = this.store.select(selectCurrentObservable);
-  }
+  constructor(
+    private devtools: DevtoolsService,
+    private store: Store<Action>
+  ) {}
   ngOnInit(): void {}
 }

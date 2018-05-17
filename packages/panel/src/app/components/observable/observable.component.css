@@ -1,0 +1,9 @@
+div {
+  position: relative;
+  list-style-type: none;
+  height: 30px;
+}
+div app-value {
+  position: absolute;
+  top: 0;
+}

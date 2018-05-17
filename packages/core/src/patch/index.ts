@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
 
 import { lift } from './lift';
-import { patch, Notif } from './subscribe';
+import { patch, Notif, NotificationKind } from './subscribe';
 
-export { Notif };
+export { Notif, NotificationKind };
 
 export function setup() {
   lift(Observable.prototype, {});

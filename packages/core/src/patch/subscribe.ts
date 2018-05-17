@@ -29,6 +29,7 @@ export interface Notif {
   value?: any;
   source?: string;
   operatorName?: string;
+  timestamp: number;
 }
 
 export class Wrapper<T> extends Subscriber<T> {
@@ -56,6 +57,7 @@ export class Wrapper<T> extends Subscriber<T> {
       operatorName: this.observable.operator
         ? this.observable.operator.constructor.name
         : undefined,
+      timestamp: Date.now(),
     });
   }
   _next(value: T) {

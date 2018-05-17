@@ -1,1 +1,3 @@
-<span *ngIf="observable">Observable {{ observable.id }}</span>
+<div *ngIf="history$ | async">
+  <app-value [value]="notif.value" *ngFor="let notif of (history$ | async).filter(isNext)" [style.left.px]="getLeft(notif)"></app-value>
+</div>

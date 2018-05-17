@@ -1,2 +1,2 @@
 export { ObservableRef } from './observable-ref';
-export { setup, Notif } from './patch';
+export { setup, Notif, NotificationKind } from './patch';

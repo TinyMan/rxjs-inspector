@@ -1,7 +1,7 @@
 import { Notif } from '@rxjs-inspector/core';
 import { Update, EntityState, createEntityAdapter } from '@ngrx/entity';
 import { ObservableActionsUnion, ActionsTypes } from './action';
-import { List } from 'immutable';
+import { Map, List } from 'immutable';
 import { createFeatureSelector } from '@ngrx/store';
 
 export interface ObservableState {
@@ -13,13 +13,13 @@ export interface ObservableState {
 }
 
 export interface State extends EntityState<ObservableState> {
-  history: List<Notif>;
+  history: Map<string, List<Notif>>;
   selectedObservableId: string | null;
 }
 
 export const adapter = createEntityAdapter<ObservableState>();
 export const initialState: State = adapter.getInitialState({
-  history: List<Notif>(),
+  history: Map<string, List<Notif>>(),
   selectedObservableId: null,
 });
 
@@ -29,7 +29,14 @@ export function reducer(
 ): State {
   switch (action.type) {
     case ActionsTypes.Notification:
-      return adapter.upsertOne(createUpdateStmt(action.payload), state);
+      return {
+        ...adapter.upsertOne(createUpdateStmt(action.payload), state),
+        history: state.history.update(
+          action.payload.id,
+          list =>
+            !!list ? list.unshift(action.payload) : List([action.payload])
+        ),
+      };
     case ActionsTypes.SelectObservable:
       return {
         ...state,
@@ -59,3 +66,5 @@ export const {
 } = adapter.getSelectors();
 export const getSelectedObservableId = (state: State) =>
   state.selectedObservableId;
+
+export const getHistory = (state: State) => state.history;
