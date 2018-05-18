@@ -18,7 +18,7 @@ import { START_TIME } from '../marble-view/marble-view.component';
 import { Inject } from '@angular/core';
 
 @Component({
-  selector: 'app-observable',
+  selector: '[app-observable]',
   templateUrl: './observable.component.html',
   styleUrls: ['./observable.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,

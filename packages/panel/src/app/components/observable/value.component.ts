@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Input } from '@angular/core';
 
 @Component({
-  selector: 'app-value',
-  template: `{{ value }}`,
+  selector: '[app-value]',
+  template: `<svg:text>{{ value }}</svg:text>`,
   styles: [
     `
   :host {

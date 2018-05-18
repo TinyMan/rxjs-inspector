@@ -1,3 +1,4 @@
-<div class="marble-view">
-  <app-observable [observable]="obs" *ngFor="let obs of previousObservables$ | async; trackBy: trackById"></app-observable>
-</div>
+<svg class="marble-view">
+  <svg:g app-observable [observable]="obs" *ngFor="let obs of previousObservables$ | async; trackBy: trackById; let i = index"
+    [attr.transform]="'translate(0, ' + 50 * i + ')'" />
+</svg>

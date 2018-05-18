@@ -7,3 +7,17 @@ div app-value {
   position: absolute;
   top: 0;
 }
+
+.arrow {
+  overflow: visible;
+}
+.line {
+  stroke: black;
+  stroke-width: 1;
+}
+
+.circle.value {
+  stroke: black;
+  stroke-width: 1;
+  fill: rgb(130, 215, 54);
+}

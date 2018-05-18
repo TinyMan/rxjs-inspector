@@ -14,7 +14,7 @@ export class AppComponent {
     const obs = interval(1000);
 
     obs
-      .pipe(tag('time'), take(10), map(n => (n * 2) % 100))
+      .pipe(tag('time'), map(n => (n * 2) % 100))
       .subscribe(a => console.log(a));
   }
 }

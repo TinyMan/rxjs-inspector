@@ -20,15 +20,7 @@ export const START_TIME = new InjectionToken<number>('Start time');
 @Component({
   selector: 'app-marble-view',
   templateUrl: './marble-view.component.html',
-  styles: [
-    `:host {
-    overflow: hidden;
-    height: 100%;
-  }
-  .marble-view {
-
-  }`,
-  ],
+  styleUrls: ['./marble-view.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [{ provide: START_TIME, useFactory: getTime }],
 })

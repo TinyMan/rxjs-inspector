@@ -1,0 +1,8 @@
+:host {
+  overflow: hidden;
+  height: 100%;
+}
+.marble-view {
+  width: 100%;
+  height: 100%;
+}

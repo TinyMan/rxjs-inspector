@@ -1,3 +1,13 @@
-<div *ngIf="history$ | async">
-  <app-value [value]="notif.value" *ngFor="let notif of (history$ | async).filter(isNext)" [style.left.px]="getLeft(notif)"></app-value>
-</div>
+<ng-template [ngIf]="history$ | async">
+  <svg:line x1="0" x2="100%" y1="10" y2="10" class="line"></svg:line>
+  <svg *ngFor="let notif of (history$ | async).filter(isNext)" [attr.x]="getLeft(notif)">
+    <svg:circle r="10" cy="10" cx="10" class="circle value"> </svg:circle>
+    <svg:text x="10" y="10" text-anchor="middle" stroke="black" alignment-baseline="middle">{{notif.value}}</svg:text>
+  </svg>
+
+  <svg x="100%" class="arrow">
+    <svg:polygon points="-10,3 -10,17 0,10"></svg:polygon>
+  </svg>
+  <!-- <svg:g app-value [value]=" notif.value " *ngFor="let notif of (history$ | async).filter(isNext) " [attr.x]="getLeft(notif) "
+  /> -->
+</ng-template>
