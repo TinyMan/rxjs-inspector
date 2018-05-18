@@ -34,16 +34,17 @@ export class ObservableComponent implements OnChanges {
     private store: Store<Action>,
     private marbleViewService: MarbleViewService,
     private _cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.marbleViewService.notify
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this._cdr.markForCheck());
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.observable && changes.observable.currentValue) {
-      (this.history$ = this.store.select(
+      this.history$ = this.store.select(
         selectObservableHistory(this.observable.id)
-      )),
-        this.marbleViewService.notify
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => this._cdr.markForCheck());
+      );
     }
   }
   ngOnDestroy() {
