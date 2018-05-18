@@ -11,6 +11,8 @@ import { environment } from '../environments/environment';
 import { ObservableComponent } from './components/observable/observable.component';
 import { ValueComponent } from './components/observable/value.component';
 import { MarbleViewComponent } from './components/marble-view/marble-view.component';
+import { DraggableDirective } from './components/marble-view/draggable.directive';
+import { ZoomableDirective } from './components/marble-view/zoomable.directive';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { MarbleViewComponent } from './components/marble-view/marble-view.compon
     ObservableComponent,
     ValueComponent,
     MarbleViewComponent,
+    DraggableDirective,
+    ZoomableDirective,
   ],
   imports: [
     BrowserModule,

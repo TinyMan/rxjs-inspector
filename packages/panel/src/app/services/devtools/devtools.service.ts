@@ -20,7 +20,7 @@ export class DevtoolsService {
       _zone.run(() => {
         switch (m.type) {
           case 'notif':
-            console.log(m.notif);
+            // console.log(m.notif);
             this.store.dispatch(new NotificationAction(m.notif as Notif));
             break;
         }

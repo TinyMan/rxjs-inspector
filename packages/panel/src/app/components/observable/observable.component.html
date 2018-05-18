@@ -1,12 +1,12 @@
 <ng-template [ngIf]="history$ | async">
-  <svg:line x1="0" x2="100%" y1="10" y2="10" class="line"></svg:line>
-  <svg *ngFor="let notif of (history$ | async).filter(isNext)" [attr.x]="getLeft(notif)">
-    <svg:circle r="10" cy="10" cx="10" class="circle value"> </svg:circle>
+  <svg:line [attr.x1]="getMinX(history$ | async)" [attr.x2]="getMaxX(history$ | async)" y1="10" y2="10" class="line" vector-effect="non-scaling-stroke"></svg:line>
+  <svg *ngFor="let notif of (history$ | async).filter(isNext)" [attr.x]="getLeft(notif)" class="value">
+    <svg:circle r="10" cy="10" cx="10" class="circle value" vector-effect="non-scaling-stroke"> </svg:circle>
     <svg:text x="10" y="10" text-anchor="middle" stroke="black" alignment-baseline="middle">{{notif.value}}</svg:text>
   </svg>
 
-  <svg x="100%" class="arrow">
-    <svg:polygon points="-10,3 -10,17 0,10"></svg:polygon>
+  <svg [attr.x]="getMaxX(history$ | async)" class="arrow">
+    <svg:polygon points="0,3 0,17 10,10" vector-effect="non-scaling-stroke"></svg:polygon>
   </svg>
   <!-- <svg:g app-value [value]=" notif.value " *ngFor="let notif of (history$ | async).filter(isNext) " [attr.x]="getLeft(notif) "
   /> -->

@@ -10,12 +10,13 @@ import { ObservableState } from '../../store/observables';
 import { Input } from '@angular/core';
 import { List } from 'immutable';
 import { Notif, NotificationKind } from '@rxjs-inspector/core';
-import { interval, Subject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { interval, Subject, Observable, combineLatest } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 import { selectObservableHistory } from '../../store';
 import { START_TIME } from '../marble-view/marble-view.component';
 import { Inject } from '@angular/core';
+import { MarbleViewService } from '../marble-view/marble-view.service';
 
 @Component({
   selector: '[app-observable]',
@@ -31,14 +32,18 @@ export class ObservableComponent implements OnChanges {
 
   constructor(
     private store: Store<Action>,
-    @Inject(START_TIME) private startTime: number
+    private marbleViewService: MarbleViewService,
+    private _cdr: ChangeDetectorRef
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.observable && changes.observable.currentValue) {
-      this.history$ = this.store.select(
+      (this.history$ = this.store.select(
         selectObservableHistory(this.observable.id)
-      );
+      )),
+        this.marbleViewService.notify
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => this._cdr.markForCheck());
     }
   }
   ngOnDestroy() {
@@ -50,6 +55,17 @@ export class ObservableComponent implements OnChanges {
     return notif.kind === NotificationKind.Next;
   }
   getLeft(notif: Notif) {
-    return (notif.timestamp - this.startTime) / 1000 * 20;
+    return (
+      (notif.timestamp - this.marbleViewService.startTime) /
+      1000 *
+      20 *
+      this.marbleViewService.scale
+    );
+  }
+  getMinX(list: List<Notif> | undefined) {
+    return list ? this.getLeft(list.last()) - 50 : 0;
+  }
+  getMaxX(list: List<Notif> | undefined) {
+    return list ? this.getLeft(list.first()) + 50 : 0;
   }
 }
