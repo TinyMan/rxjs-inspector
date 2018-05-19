@@ -18,6 +18,8 @@ This project is in early developpement stage.
 First install locally
 
 ```
+git clone https://github.com/TinyMan/rxjs-inspector.git
+cd rxjs-inspector
 npm install
 npm run bootstrap
 ```
