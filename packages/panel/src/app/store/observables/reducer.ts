@@ -17,6 +17,7 @@ export interface State extends EntityState<ObservableState> {
   selectedObservableId: string | null;
   historyMaxAge: number; // maximum age of events in the history
   historySize: number; // maximum number of events in the history
+  sticky: boolean; // if the marble diagram is sticky to the flowing time
 }
 
 export const adapter = createEntityAdapter<ObservableState>();
@@ -25,6 +26,7 @@ export const initialState: State = adapter.getInitialState({
   selectedObservableId: null,
   historyMaxAge: 300000, // 300 seconds
   historySize: 200,
+  sticky: true,
 });
 
 export function reducer(
@@ -49,6 +51,11 @@ export function reducer(
       return {
         ...state,
         selectedObservableId: action.payload,
+      };
+    case ActionsTypes.StickyUpdate:
+      return {
+        ...state,
+        sticky: action.payload,
       };
     default:
       return state;
@@ -76,3 +83,4 @@ export const getSelectedObservableId = (state: State) =>
   state.selectedObservableId;
 
 export const getHistory = (state: State) => state.history;
+export const getStricky = (state: State) => state.sticky;

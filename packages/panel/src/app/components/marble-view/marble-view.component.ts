@@ -1,7 +1,7 @@
-import { Component, OnInit, InjectionToken } from '@angular/core';
+import { Component, OnInit, InjectionToken, OnDestroy } from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, interval, Subject } from 'rxjs';
 import { List } from 'immutable';
 import { Notif } from '@rxjs-inspector/core';
 import { ObservableState } from '../../store/observables';
@@ -12,6 +12,7 @@ import {
 } from '../../store';
 import { switchMap, filter } from 'rxjs/operators';
 import { MarbleViewService } from './marble-view.service';
+import { StickyUpdateAction } from '../../store/observables/action';
 
 export function getTime() {
   return Date.now();
@@ -25,11 +26,16 @@ export const START_TIME = new InjectionToken<number>('Start time');
   changeDetection: ChangeDetectionStrategy.OnPush,
   viewProviders: [MarbleViewService],
 })
-export class MarbleViewComponent implements OnInit {
+export class MarbleViewComponent implements OnInit, OnDestroy {
   selectedObservable$: Observable<ObservableState>;
   selectedObservableHistory$: Observable<List<Notif>>;
   previousObservables$: Observable<ObservableState[]>;
-  constructor(private store: Store<Action>) {
+
+  private destroy$ = new Subject();
+  constructor(
+    private store: Store<Action>,
+    private marbleViewService: MarbleViewService
+  ) {
     this.selectedObservable$ = this.store.select(selectCurrentObservable);
     this.selectedObservableHistory$ = this.store.select(
       selectCurrentObservableHistory
@@ -39,7 +45,16 @@ export class MarbleViewComponent implements OnInit {
       switchMap(obs => this.store.select(selectSourcesObservables(obs.id)))
     );
   }
+
+  public stickyChange(value: boolean) {
+    this.store.dispatch(new StickyUpdateAction(value));
+  }
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   public trackById(i: number, e: { id: any }) {
     return e.id;
   }

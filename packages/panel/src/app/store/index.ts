@@ -5,7 +5,7 @@ import {
   ActionReducer,
 } from '@ngrx/store';
 import * as fromObservables from './observables';
-import { getHistory, ObservableState } from './observables';
+import { getHistory, ObservableState, getStricky } from './observables';
 import { List } from 'immutable';
 import { Notif } from '@rxjs-inspector/core';
 
@@ -55,6 +55,8 @@ export const selectCurrentObservableHistory = createSelector(
 
 export const selectSourcesObservables = (id: string) =>
   createSelector(selectObservableEntities, ent => getSources(ent, id));
+
+export const selectSticky = createSelector(selectObservablesState, getStricky);
 
 function getSources(
   entities: { [id: string]: ObservableState },

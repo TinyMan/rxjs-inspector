@@ -1,5 +1,25 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {
+  BehaviorSubject,
+  interval,
+  animationFrameScheduler,
+  NEVER,
+} from 'rxjs';
+import {
+  refCount,
+  tap,
+  publish,
+  switchMap,
+  filter,
+  takeUntil,
+} from 'rxjs/operators';
+import { Action, Store } from '@ngrx/store';
+import { selectSticky } from '../../store';
+
+const animationFrame$ = interval(0, animationFrameScheduler).pipe(
+  publish(),
+  refCount()
+);
 
 @Injectable()
 export class MarbleViewService {
@@ -16,7 +36,15 @@ export class MarbleViewService {
   private dragging = false;
   private pointerOrigin?: SVGPoint;
 
-  constructor() {}
+  constructor(private store: Store<Action>) {
+    this.store
+      .select(selectSticky)
+      .pipe(
+        switchMap(sticky => (!sticky ? NEVER : animationFrame$)),
+        filter(sticky => !!this.svg)
+      )
+      .subscribe(() => this.stick());
+  }
   zoom(event: MouseWheelEvent) {
     const mouseWheelZoomSpeed = 1 / 120;
     const zoomFactor = event.wheelDelta * mouseWheelZoomSpeed * 0.8;
@@ -75,5 +103,13 @@ export class MarbleViewService {
     const invertedSVGMatrix = this.svg.getScreenCTM().inverse();
 
     return this.point.matrixTransform(invertedSVGMatrix);
+  }
+
+  private stick() {
+    if (!this.viewBox || this.dragging) return;
+    this.viewBox.x = this.getPointFromTime(Date.now()) - 940;
+  }
+  getPointFromTime(t: number) {
+    return (t - this.startTime) / 1000 * 20 * this.scale;
   }
 }
