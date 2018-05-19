@@ -34,7 +34,7 @@ export class MarbleViewService {
   private point?: SVGPoint;
   private svg?: SVGSVGElement;
   private svg$ = new BehaviorSubject<SVGSVGElement | undefined>(undefined);
-  private viewBox?: SVGRect;
+  private _translate = { x: 0, y: 0 };
   private dragging = false;
   private pointerOrigin?: SVGPoint;
 
@@ -52,9 +52,23 @@ export class MarbleViewService {
     const zoomFactor = event.wheelDelta * mouseWheelZoomSpeed * 0.8;
     const oldScale = this._scale;
     this._scale = Math.max(this._scale + zoomFactor, 1);
-    if (this.viewBox) {
+    if (this.svg) {
       const zoomOrigin = this.getPointFromEvent(event)!;
-      this.viewBox.x -= zoomOrigin.x - zoomOrigin.x / oldScale * this._scale;
+      // this.svg.viewBox.baseVal.x =
+      //   this.svg.viewBox.baseVal.x -
+      //   (zoomOrigin.x - zoomOrigin.x / oldScale * this._scale);
+
+      console.log(
+        'Point de zoom: ',
+        zoomOrigin.x,
+        'pdz translate ',
+        zoomOrigin.x + this._translate.x
+      );
+      const x =
+        this._translate.x -
+        (zoomOrigin.x - zoomOrigin.x / oldScale * this._scale);
+
+      this.setTranslate({ x });
     }
     this.notify.next(null);
   }
@@ -62,14 +76,13 @@ export class MarbleViewService {
   registerSvg(svg: SVGSVGElement) {
     this.svg = svg;
     this.point = this.svg.createSVGPoint();
-    this.viewBox = this.svg.viewBox.baseVal;
     this.svg$.next(this.svg);
   }
 
   destroySvg() {
     this.svg = undefined;
     this.point = undefined;
-    this.viewBox = undefined;
+    this.setTranslate({ x: 0, y: 0 });
     this.svg$.next(undefined);
   }
 
@@ -82,22 +95,18 @@ export class MarbleViewService {
   }
 
   drag(event: MouseEvent | TouchEvent) {
-    if (
-      !this.dragging ||
-      !this.svg ||
-      !this.point ||
-      !this.viewBox ||
-      !this.pointerOrigin
-    ) {
+    if (!this.dragging || !this.svg || !this.point || !this.pointerOrigin) {
       return;
     }
     event.preventDefault();
 
-    const pointerPosition = this.getPointFromEvent(event)!;
+    const p = this.getPointFromEvent(event)!;
 
-    this.viewBox.x -= pointerPosition.x - this.pointerOrigin.x;
-    const temp = this.viewBox.y - (pointerPosition.y - this.pointerOrigin.y);
-    this.viewBox.y = Math.min(0, temp);
+    this.setTranslate({
+      x: this._translate.x + (p.x - this.pointerOrigin.x),
+      y: Math.max(0, this._translate.y + (p.y - this.pointerOrigin.y)),
+    });
+    this.pointerOrigin = p;
   }
 
   getPointFromEvent(event: MouseEvent | TouchEvent): SVGPoint | undefined {
@@ -116,10 +125,21 @@ export class MarbleViewService {
   }
 
   private stick() {
-    if (!this.viewBox || this.dragging) return;
-    this.viewBox.x = Math.round(this.getPointFromTime(Date.now()) - 940);
+    if (!this.svg || this.dragging) return;
+    const newX = Math.round(this.getPointFromTime(Date.now()) - 940);
+    this.setTranslate({ x: -newX });
   }
   getPointFromTime(t: number) {
     return (t - this.startTime) / 1000 * 20 * this.scale;
+  }
+
+  private setTranslate({ x = this._translate.x, y = this._translate.y } = {}) {
+    if (this.svg) {
+      this._translate = { x, y };
+      (this.svg.firstChild as SVGGElement).setAttribute(
+        'transform',
+        'translate(' + this._translate.x + ' ' + this._translate.y + ')'
+      );
+    }
   }
 }
