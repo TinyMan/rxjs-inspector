@@ -15,12 +15,16 @@ export interface ObservableState {
 export interface State extends EntityState<ObservableState> {
   history: Map<string, List<Notif>>;
   selectedObservableId: string | null;
+  historyMaxAge: number; // maximum age of events in the history
+  historySize: number; // maximum number of events in the history
 }
 
 export const adapter = createEntityAdapter<ObservableState>();
 export const initialState: State = adapter.getInitialState({
   history: Map<string, List<Notif>>(),
   selectedObservableId: null,
+  historyMaxAge: 300000, // 300 seconds
+  historySize: 200,
 });
 
 export function reducer(
@@ -29,12 +33,16 @@ export function reducer(
 ): State {
   switch (action.type) {
     case ActionsTypes.Notification:
+      const now = Date.now();
       return {
         ...adapter.upsertOne(createUpdateStmt(action.payload), state),
-        history: state.history.update(
-          action.payload.id,
-          list =>
-            !!list ? list.unshift(action.payload) : List([action.payload])
+        history: state.history.update(action.payload.id, list =>
+          (!!list ? list.unshift(action.payload) : List([action.payload]))
+            .take(state.historySize)
+            .takeWhile(
+              notif => !!notif && notif.timestamp > now - state.historyMaxAge
+            )
+            .toList()
         ),
       };
     case ActionsTypes.SelectObservable:
