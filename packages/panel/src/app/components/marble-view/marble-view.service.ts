@@ -17,8 +17,15 @@ export class MarbleViewService {
   private pointerOrigin?: SVGPoint;
 
   constructor() {}
-  zoom(z: number) {
-    this._scale = Math.max(this._scale + z, 1);
+  zoom(event: MouseWheelEvent) {
+    const mouseWheelZoomSpeed = 1 / 120;
+    const zoomFactor = event.wheelDelta * mouseWheelZoomSpeed * 0.8;
+    const oldScale = this._scale;
+    this._scale = Math.max(this._scale + zoomFactor, 1);
+    if (this.viewBox) {
+      const zoomOrigin = this.getPointFromEvent(event)!;
+      this.viewBox.x -= zoomOrigin.x - zoomOrigin.x / oldScale * this._scale;
+    }
     this.notify.next(null);
   }
 

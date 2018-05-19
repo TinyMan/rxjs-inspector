@@ -12,8 +12,7 @@ export class ZoomableDirective {
 
   @HostListener('mousewheel', ['$event'])
   mouseWheel(e: MouseWheelEvent) {
-    const mouseWheelZoomSpeed = 1 / 120;
-    this.marbleViewService.zoom(e.wheelDelta * mouseWheelZoomSpeed * 0.8);
+    this.marbleViewService.zoom(e);
     return false;
   }
 }
