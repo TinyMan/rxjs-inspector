@@ -56,11 +56,11 @@ export class ObservableComponent implements OnChanges {
     return notif.kind === NotificationKind.Next;
   }
   getLeft(notif: Notif) {
-    return (
+    return Math.round(
       (notif.timestamp - this.marbleViewService.startTime) /
-      1000 *
-      20 *
-      this.marbleViewService.scale
+        1000 *
+        20 *
+        this.marbleViewService.scale
     );
   }
   getMinX(list: List<Notif> | undefined) {

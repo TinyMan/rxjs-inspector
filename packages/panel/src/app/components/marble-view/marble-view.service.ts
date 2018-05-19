@@ -107,7 +107,7 @@ export class MarbleViewService {
 
   private stick() {
     if (!this.viewBox || this.dragging) return;
-    this.viewBox.x = this.getPointFromTime(Date.now()) - 940;
+    this.viewBox.x = Math.round(this.getPointFromTime(Date.now()) - 940);
   }
   getPointFromTime(t: number) {
     return (t - this.startTime) / 1000 * 20 * this.scale;
