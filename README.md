@@ -22,6 +22,7 @@ git clone https://github.com/TinyMan/rxjs-inspector.git
 cd rxjs-inspector
 npm install
 npm run bootstrap
+npm run build
 ```
 
 You can run the demo app:

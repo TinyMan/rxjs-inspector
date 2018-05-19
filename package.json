@@ -4,6 +4,7 @@
     "commit": "git-cz",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "bootstrap": "lerna bootstrap --hoist",
+    "build": "lerna run build",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*",
