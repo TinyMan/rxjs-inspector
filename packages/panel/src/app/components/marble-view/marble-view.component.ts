@@ -10,7 +10,7 @@ import {
   selectCurrentObservableHistory,
   selectSourcesObservables,
 } from '../../store';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, share } from 'rxjs/operators';
 import { MarbleViewService } from './marble-view.service';
 import { StickyUpdateAction } from '../../store/observables/action';
 
@@ -42,7 +42,8 @@ export class MarbleViewComponent implements OnInit, OnDestroy {
     );
     this.previousObservables$ = this.selectedObservable$.pipe(
       filter(obs => !!obs),
-      switchMap(obs => this.store.select(selectSourcesObservables(obs.id)))
+      switchMap(obs => this.store.select(selectSourcesObservables(obs.id))),
+      share()
     );
   }
 

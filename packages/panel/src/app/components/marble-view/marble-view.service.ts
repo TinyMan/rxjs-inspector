@@ -4,6 +4,7 @@ import {
   interval,
   animationFrameScheduler,
   NEVER,
+  combineLatest,
 } from 'rxjs';
 import {
   refCount,
@@ -32,16 +33,17 @@ export class MarbleViewService {
 
   private point?: SVGPoint;
   private svg?: SVGSVGElement;
+  private svg$ = new BehaviorSubject<SVGSVGElement | undefined>(undefined);
   private viewBox?: SVGRect;
   private dragging = false;
   private pointerOrigin?: SVGPoint;
 
   constructor(private store: Store<Action>) {
-    this.store
-      .select(selectSticky)
+    combineLatest(this.store.select(selectSticky), this.svg$)
       .pipe(
-        switchMap(sticky => (!sticky ? NEVER : animationFrame$)),
-        filter(sticky => !!this.svg)
+        switchMap(
+          ([sticky, svg]) => (!sticky || !svg ? NEVER : animationFrame$)
+        )
       )
       .subscribe(() => this.stick());
   }
@@ -61,6 +63,14 @@ export class MarbleViewService {
     this.svg = svg;
     this.point = this.svg.createSVGPoint();
     this.viewBox = this.svg.viewBox.baseVal;
+    this.svg$.next(this.svg);
+  }
+
+  destroySvg() {
+    this.svg = undefined;
+    this.point = undefined;
+    this.viewBox = undefined;
+    this.svg$.next(undefined);
   }
 
   startDrag(event: MouseEvent | TouchEvent) {
