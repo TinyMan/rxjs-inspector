@@ -9,20 +9,20 @@ import { ObservableListComponent } from './components/observable-list/observable
 import { reducers } from './store';
 import { environment } from '../environments/environment';
 import { ObservableComponent } from './components/observable/observable.component';
-import { ValueComponent } from './components/observable/value.component';
 import { MarbleViewComponent } from './components/marble-view/marble-view.component';
 import { DraggableDirective } from './directives/draggable.directive';
 import { ZoomableDirective } from './directives/zoomable.directive';
+import { StickyDirective } from './directives/sticky.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     ObservableListComponent,
     ObservableComponent,
-    ValueComponent,
     MarbleViewComponent,
     DraggableDirective,
     ZoomableDirective,
+    StickyDirective,
   ],
   imports: [
     BrowserModule,

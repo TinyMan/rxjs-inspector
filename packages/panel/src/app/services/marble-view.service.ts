@@ -32,12 +32,13 @@ export class MarbleViewService {
   public startTime = Date.now();
 
   private point?: SVGPoint;
-  private svg?: SVGSVGElement;
+  public svg?: SVGSVGElement;
   private svg$ = new BehaviorSubject<SVGSVGElement | undefined>(undefined);
   private _translate = { x: 0, y: 0 };
   private dragging = false;
   private pointerOrigin?: SVGPoint;
 
+  public translate$ = new BehaviorSubject(this._translate);
   constructor(private store: Store<Action>) {
     combineLatest(this.store.select(selectSticky), this.svg$)
       .pipe(
@@ -149,6 +150,7 @@ export class MarbleViewService {
   private setTranslate({ x = this._translate.x, y = this._translate.y } = {}) {
     if (this.svg) {
       this._translate = { x, y };
+      this.translate$.next(this._translate);
       (this.svg.firstChild as SVGGElement).setAttribute(
         'transform',
         'translate(' + this._translate.x + ' ' + this._translate.y + ')'
