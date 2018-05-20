@@ -1,0 +1,12 @@
+<div class="example">
+  <span class="description">Interval 1: emits each second and map to i * 2 % 100</span>
+  <span class="value">Value: {{ interval1$ | async}}</span>
+</div>
+<div class="example">
+  <span class="description">Take 1: emits each second and take 10</span>
+  <span class="value">Value: {{ take1$ | async }}</span>
+</div>
+<div class="example">
+  <span class="description">Error 1: emits each second and error in map</span>
+  <span class="value">Value: {{ error1$ | async }}</span>
+</div>
