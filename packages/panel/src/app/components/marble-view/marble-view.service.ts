@@ -54,21 +54,34 @@ export class MarbleViewService {
     this._scale = Math.max(this._scale + zoomFactor, 1);
     if (this.svg) {
       const zoomOrigin = this.getPointFromEvent(event)!;
-      // this.svg.viewBox.baseVal.x =
-      //   this.svg.viewBox.baseVal.x -
-      //   (zoomOrigin.x - zoomOrigin.x / oldScale * this._scale);
-
+      /*
       console.log(
-        'Point de zoom: ',
+        'Zoom origin',
+        // point where the mouse is
         zoomOrigin.x,
-        'pdz translate ',
-        zoomOrigin.x + this._translate.x
-      );
-      const x =
+        'Zoom origin in svg coordinates',
+        // the svg point corresponding
+        zoomOrigin.x - this._translate.x,
+        'New point in svg coordinates',
+        // the new point after applying the new scale
+        (zoomOrigin.x - this._translate.x) / oldScale * this.scale,
+        'diff',
+        // the difference between the old and the new point (svg coordinates)
+        (zoomOrigin.x - this._translate.x) / oldScale * this.scale -
+          (zoomOrigin.x - this._translate.x),
+        'new translate',
+        // the new translate with the difference applied
         this._translate.x -
-        (zoomOrigin.x - zoomOrigin.x / oldScale * this._scale);
+          ((zoomOrigin.x - this._translate.x) / oldScale * this.scale -
+            (zoomOrigin.x - this._translate.x))
+      );*/
 
-      this.setTranslate({ x });
+      this.setTranslate({
+        x:
+          this._translate.x -
+          ((zoomOrigin.x - this._translate.x) / oldScale * this.scale -
+            (zoomOrigin.x - this._translate.x)),
+      });
     }
     this.notify.next(null);
   }
