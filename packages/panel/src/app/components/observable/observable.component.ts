@@ -85,4 +85,8 @@ export class ObservableComponent implements OnChanges {
       ? this.marbleViewService.timeToPixel(list.first().timestamp) + 50
       : 0;
   }
+
+  public trackByIndex(i: number, v: any) {
+    return i;
+  }
 }
