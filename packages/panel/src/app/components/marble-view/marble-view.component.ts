@@ -9,6 +9,7 @@ import {
   selectCurrentObservable,
   selectCurrentObservableHistory,
   selectSourcesObservables,
+  selectSticky,
 } from '../../store';
 import { switchMap, filter, share } from 'rxjs/operators';
 import { MarbleViewService } from '../../services/marble-view.service';
@@ -30,6 +31,7 @@ export class MarbleViewComponent implements OnInit, OnDestroy {
   selectedObservable$: Observable<ObservableState>;
   selectedObservableHistory$: Observable<List<Notif>>;
   previousObservables$: Observable<ObservableState[]>;
+  sticky$: Observable<boolean>;
 
   private destroy$ = new Subject();
   constructor(
@@ -45,6 +47,7 @@ export class MarbleViewComponent implements OnInit, OnDestroy {
       switchMap(obs => this.store.select(selectSourcesObservables(obs.id))),
       share()
     );
+    this.sticky$ = this.store.select(selectSticky);
   }
 
   public stickyChange(value: boolean) {

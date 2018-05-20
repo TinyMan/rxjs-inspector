@@ -1,4 +1,4 @@
-<input type="checkbox" name="sticky" id="sticky" (change)="stickyChange($event.target.checked)" checked>
+<input type="checkbox" name="sticky" id="sticky" (change)="stickyChange($event.target.checked)" [checked]="sticky$ | async">
 <label for="sticky">Sticky</label>
 <svg class="marble-view" viewBox="0 0 1000 1000" draggable zoomable *ngIf="(selectedObservable$ | async)" rootSvg>
   <svg:g>

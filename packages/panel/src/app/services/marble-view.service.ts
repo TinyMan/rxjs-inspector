@@ -16,6 +16,7 @@ import {
 } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 import { selectSticky } from '../store';
+import { StickyUpdateAction } from '../store/observables/action';
 
 const animationFrame$ = interval(0, animationFrameScheduler).pipe(
   publish(),
@@ -101,6 +102,8 @@ export class MarbleViewService {
   }
 
   startDrag(event: MouseEvent | TouchEvent) {
+    // user wants to control the view by hand
+    this.store.dispatch(new StickyUpdateAction(false));
     this.dragging = true;
     this.pointerOrigin = this.getPointFromEvent(event);
   }
