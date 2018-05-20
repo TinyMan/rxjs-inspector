@@ -15,9 +15,18 @@ div app-value {
   stroke: black;
   stroke-width: 1;
 }
-
-.circle.value {
+.next {
   stroke: black;
   stroke-width: 1;
   fill: rgb(130, 215, 54);
+}
+
+.error line {
+  stroke: red;
+  stroke-width: 2;
+}
+
+.complete line {
+  stroke: black;
+  stroke-width: 2;
 }

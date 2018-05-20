@@ -55,6 +55,18 @@ export class ObservableComponent implements OnChanges {
   isNext(notif: Notif) {
     return notif.kind === NotificationKind.Next;
   }
+  isError(notif: Notif) {
+    return notif.kind === NotificationKind.Error;
+  }
+  isComplete(notif: Notif) {
+    return notif.kind === NotificationKind.Complete;
+  }
+  isUnsubscribe(notif: Notif) {
+    return notif.kind === NotificationKind.Unsubscribe;
+  }
+  isSubscribe(notif: Notif) {
+    return notif.kind === NotificationKind.Subscribe;
+  }
   getLeft(notif: Notif) {
     return Math.round(
       (notif.timestamp - this.marbleViewService.startTime) /
