@@ -11,7 +11,10 @@
     "lib": ["es2017", "dom"],
     "module": "es2015",
     "paths": {
-      "@rxjs-inspector/core": ["../node_modules/@rxjs-inspector/core/src"]
+      "@rxjs-inspector/core": ["../node_modules/@rxjs-inspector/core/src"],
+      "@rxjs-inspector/devtools": [
+        "../node_modules/@rxjs-inspector/devtools/src"
+      ]
     }
   },
   "exclude": ["test.ts", "**/*.spec.ts"]

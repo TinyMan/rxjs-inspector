@@ -1,7 +1,13 @@
 import { setup, Notif } from '@rxjs-inspector/core';
 import { Observable } from 'rxjs';
 import { EXTENSION_KEY, EventType } from './constants';
-import { DevtoolsHook } from './types';
+import {
+  DevtoolsHook,
+  DevtoolsNotifEvent,
+  DevtoolsBatchEvent,
+  DevtoolsInitEvent,
+} from './types';
+import { bufferTime } from 'rxjs/operators';
 function replaceErrors(key: any, value: any) {
   if (value instanceof Error) {
     let error: { [key: string]: any } = {};
@@ -24,33 +30,32 @@ export class InspectorDevtools {
       this.extension = window[EXTENSION_KEY] as DevtoolsHook;
       this.window.dispatchEvent(
         new CustomEvent(this.extension.namespace, {
-          detail: {
-            type: EventType.INIT,
-          },
+          detail: new DevtoolsInitEvent(),
         })
       );
 
       const { notifications$ } = setup();
       this.notifications$ = notifications$;
-      this.notifications$.subscribe(notif => this.onNotification(notif));
+      this.notifications$
+        .pipe(bufferTime(50))
+        .subscribe(buf => buf.length > 0 && this.postBatch(buf));
     }
   }
-  private onNotification(notif: Notif) {
+  private notifToEvent(notif: Notif) {
+    // https://stackoverflow.com/questions/28699159/customevent-detail-tainted
+    // every object passed through this interface HAVE to be clonable
+    return new DevtoolsNotifEvent({
+      ...notif,
+      value: JSON.stringify(notif.value, replaceErrors),
+      observable: undefined,
+    });
+  }
+  private postBatch(batch: Notif[]) {
     if (this.extension) {
-      this.window.dispatchEvent(
-        // https://stackoverflow.com/questions/28699159/customevent-detail-tainted
-        // every object passed through this interface HAVE to be clonable
-        new CustomEvent(this.extension.namespace, {
-          detail: {
-            notif: {
-              ...notif,
-              value: JSON.stringify(notif.value, replaceErrors),
-              observable: undefined,
-            },
-            type: EventType.NOTIF,
-          },
-        })
-      );
+      const event = new CustomEvent(this.extension.namespace, {
+        detail: new DevtoolsBatchEvent(batch.map(n => this.notifToEvent(n))),
+      });
+      this.window.dispatchEvent(event);
     }
   }
 }
