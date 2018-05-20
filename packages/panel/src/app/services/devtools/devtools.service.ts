@@ -21,7 +21,12 @@ export class DevtoolsService {
         switch (m.type) {
           case 'notif':
             // console.log(m.notif);
-            this.store.dispatch(new NotificationAction(m.notif as Notif));
+            this.store.dispatch(
+              new NotificationAction({
+                ...m.notif,
+                value: m.notif.value && JSON.parse(m.notif.value),
+              } as Notif)
+            );
             break;
         }
       })
