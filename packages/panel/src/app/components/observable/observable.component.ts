@@ -38,7 +38,7 @@ export class ObservableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.observable && changes.observable.currentValue) {
       this.history$ = combineLatest(
-        this.marbleViewService.notify,
+        this.marbleViewService.notify$,
         this.store.select(selectObservableHistory(this.observable.id))
       ).pipe(
         map(([, history]) =>

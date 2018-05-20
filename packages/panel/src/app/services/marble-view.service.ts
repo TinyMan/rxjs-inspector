@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import {
   BehaviorSubject,
   interval,
@@ -29,7 +29,7 @@ export class MarbleViewService {
   public get scale() {
     return this._scale;
   }
-  public notify = new BehaviorSubject(null);
+  public notify$ = new BehaviorSubject(null);
   public startTime = Date.now();
 
   private point?: SVGPoint;
@@ -40,11 +40,11 @@ export class MarbleViewService {
   private pointerOrigin?: SVGPoint;
 
   public translate$ = new BehaviorSubject(this._translate);
-  constructor(private store: Store<Action>) {
+  constructor(private store: Store<Action>, private ngZone: NgZone) {
     combineLatest(
       this.store
         .select(selectSticky)
-        .pipe(tap(sticky => sticky && this.notify.next(null))),
+        .pipe(tap(sticky => sticky && setTimeout(() => this.notify()))), // we need the notify to run AFTER the stick
       this.svg$
     )
       .pipe(
@@ -53,6 +53,9 @@ export class MarbleViewService {
         )
       )
       .subscribe(() => this.stick());
+  }
+  public notify() {
+    this.notify$.next(null);
   }
   zoom(event: MouseWheelEvent) {
     const mouseWheelZoomSpeed = 1 / 120;
@@ -90,7 +93,7 @@ export class MarbleViewService {
             (zoomOrigin.x - this._translate.x)),
       });
     }
-    this.notify.next(null);
+    this.notify();
   }
 
   registerSvg(svg: SVGSVGElement) {
@@ -129,7 +132,7 @@ export class MarbleViewService {
       y: Math.max(0, this._translate.y + (p.y - this.pointerOrigin.y)),
     });
     this.pointerOrigin = p;
-    this.notify.next(null);
+    this.notify();
   }
 
   getPointFromEvent(event: MouseEvent | TouchEvent): SVGPoint | undefined {
