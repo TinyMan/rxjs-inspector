@@ -41,7 +41,12 @@ export class MarbleViewService {
 
   public translate$ = new BehaviorSubject(this._translate);
   constructor(private store: Store<Action>) {
-    combineLatest(this.store.select(selectSticky), this.svg$)
+    combineLatest(
+      this.store
+        .select(selectSticky)
+        .pipe(tap(sticky => sticky && this.notify.next(null))),
+      this.svg$
+    )
       .pipe(
         switchMap(
           ([sticky, svg]) => (!sticky || !svg ? NEVER : animationFrame$)
@@ -124,6 +129,7 @@ export class MarbleViewService {
       y: Math.max(0, this._translate.y + (p.y - this.pointerOrigin.y)),
     });
     this.pointerOrigin = p;
+    this.notify.next(null);
   }
 
   getPointFromEvent(event: MouseEvent | TouchEvent): SVGPoint | undefined {
@@ -159,5 +165,13 @@ export class MarbleViewService {
         'translate(' + this._translate.x + ' ' + this._translate.y + ')'
       );
     }
+  }
+  public isInWindow(t: number) {
+    const p = this.timeToPixel(t);
+    return p > -this._translate.x - 20 && p < -this._translate.x + 1020;
+  }
+
+  public timeToPixel(t: number) {
+    return Math.round((t - this.startTime) / 1000 * 20 * this.scale);
   }
 }
