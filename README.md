@@ -25,6 +25,12 @@ npm run bootstrap
 npm run build
 ```
 
+Then you have to install the extension in chrome:
+
+* Go to chrome://extension and tick "developper mode"
+* Load unpacked extension
+* Choose `<package root>/packages/extension/lib`
+
 You can run the demo app:
 
 ```
