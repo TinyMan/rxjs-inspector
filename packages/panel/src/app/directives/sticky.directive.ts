@@ -24,7 +24,8 @@ export class StickyDirective implements OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(translation => {
         if (!this.translate) {
-          this.translate = this.marbleViewService.svg!.createSVGTransform();
+          if (!this.marbleViewService.svg) return;
+          this.translate = this.marbleViewService.svg.createSVGTransform();
           transform.appendItem(this.translate);
         }
         this.translate.setTranslate(

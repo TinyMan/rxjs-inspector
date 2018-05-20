@@ -1,6 +1,6 @@
 <input type="checkbox" name="sticky" id="sticky" (change)="stickyChange($event.target.checked)" checked>
 <label for="sticky">Sticky</label>
-<svg class="marble-view" viewBox="0 0 1000 1000" draggable zoomable *ngIf="(selectedObservable$ | async)">
+<svg class="marble-view" viewBox="0 0 1000 1000" draggable zoomable *ngIf="(selectedObservable$ | async)" rootSvg>
   <svg:g>
     <svg:g app-observable [observable]="obs" *ngFor="let obs of previousObservables$ | async; trackBy: trackById; let i = index"
       [attr.transform]="'translate(0, ' + 50 * i + ')'" />

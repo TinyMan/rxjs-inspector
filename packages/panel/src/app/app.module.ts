@@ -13,6 +13,7 @@ import { MarbleViewComponent } from './components/marble-view/marble-view.compon
 import { DraggableDirective } from './directives/draggable.directive';
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { StickyDirective } from './directives/sticky.directive';
+import { RootSvgDirective } from './directives/root-svg.directive';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { StickyDirective } from './directives/sticky.directive';
     DraggableDirective,
     ZoomableDirective,
     StickyDirective,
+    RootSvgDirective,
   ],
   imports: [
     BrowserModule,
