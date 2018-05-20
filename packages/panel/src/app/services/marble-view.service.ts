@@ -50,9 +50,9 @@ export class MarbleViewService {
   }
   zoom(event: MouseWheelEvent) {
     const mouseWheelZoomSpeed = 1 / 120;
-    const zoomFactor = event.wheelDelta * mouseWheelZoomSpeed * 0.8;
+    const zoomFactor = event.wheelDelta * mouseWheelZoomSpeed * 0.3;
     const oldScale = this._scale;
-    this._scale = Math.max(this._scale + zoomFactor, 1);
+    this._scale = Math.max(this._scale + zoomFactor * this._scale, 1);
     if (this.svg) {
       const zoomOrigin = this.getPointFromEvent(event)!;
       /*
