@@ -3,6 +3,7 @@ import {
   createFeatureSelector,
   ActionReducerMap,
   ActionReducer,
+  Action,
 } from '@ngrx/store';
 import * as fromObservables from './observables';
 import { getHistory, ObservableState, getStricky } from './observables';
@@ -70,4 +71,23 @@ function getSources(
     return a.concat([entities[id]]);
   }
   return [];
+}
+
+export class BatchAction implements Action {
+  public type = 'Anonymous Batch Action';
+
+  constructor(public payload: any[]) {}
+}
+
+export function enableBatchReducer<S>(
+  reduce: ActionReducer<S>
+): ActionReducer<S> {
+  return function batchReducer(state: S | undefined, action: Action): S {
+    if (action instanceof BatchAction) {
+      let batchActions = action.payload;
+      return batchActions.reduce(batchReducer, state);
+    } else {
+      return reduce(state, action);
+    }
+  };
 }

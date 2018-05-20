@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { StoreModule } from '@ngrx/store';
+import { StoreModule, MetaReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { ObservableListComponent } from './components/observable-list/observable-list.component';
-import { reducers } from './store';
+import { reducers, State, enableBatchReducer } from './store';
 import { environment } from '../environments/environment';
 import { ObservableComponent } from './components/observable/observable.component';
 import { MarbleViewComponent } from './components/marble-view/marble-view.component';
@@ -14,6 +14,8 @@ import { DraggableDirective } from './directives/draggable.directive';
 import { ZoomableDirective } from './directives/zoomable.directive';
 import { StickyDirective } from './directives/sticky.directive';
 import { RootSvgDirective } from './directives/root-svg.directive';
+
+export const metaReducers: MetaReducer<State>[] = [enableBatchReducer];
 
 @NgModule({
   declarations: [
@@ -28,7 +30,7 @@ import { RootSvgDirective } from './directives/root-svg.directive';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, { metaReducers }),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 10 }),
