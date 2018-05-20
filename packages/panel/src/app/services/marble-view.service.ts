@@ -15,7 +15,7 @@ import {
   takeUntil,
 } from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
-import { selectSticky } from '../../store';
+import { selectSticky } from '../store';
 
 const animationFrame$ = interval(0, animationFrameScheduler).pipe(
   publish(),

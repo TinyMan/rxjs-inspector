@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { MarbleViewService } from './marble-view.service';
+import { MarbleViewService } from '../services/marble-view.service';
 
 @Directive({
   selector: '[zoomable]',

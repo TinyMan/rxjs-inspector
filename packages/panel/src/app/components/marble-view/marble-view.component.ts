@@ -11,7 +11,7 @@ import {
   selectSourcesObservables,
 } from '../../store';
 import { switchMap, filter, share } from 'rxjs/operators';
-import { MarbleViewService } from './marble-view.service';
+import { MarbleViewService } from '../../services/marble-view.service';
 import { StickyUpdateAction } from '../../store/observables/action';
 
 export function getTime() {

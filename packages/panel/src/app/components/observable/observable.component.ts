@@ -16,7 +16,7 @@ import { Action, Store } from '@ngrx/store';
 import { selectObservableHistory } from '../../store';
 import { START_TIME } from '../marble-view/marble-view.component';
 import { Inject } from '@angular/core';
-import { MarbleViewService } from '../marble-view/marble-view.service';
+import { MarbleViewService } from '../../services/marble-view.service';
 
 @Component({
   selector: '[app-observable]',
