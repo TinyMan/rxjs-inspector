@@ -8,9 +8,15 @@ import {
   tap,
   skip,
   filter,
+  first,
+  mapTo,
+  switchMap,
+  switchMapTo,
+  takeUntil,
 } from 'rxjs/operators';
 import { tag } from '../operators';
 import { identify, tag as tagFn } from '../util';
+import { marbles } from 'rxjs-marbles/jest';
 
 describe('subscribe', () => {
   it(`should return an observable that patch the subscribe method when it\'s subscribed to`, () => {
@@ -56,6 +62,28 @@ describe('subscribe', () => {
       s.complete();
     });
   });
+  it(
+    'should not break unsubscribe',
+    marbles(m => {
+      patch(Observable.prototype).subscribe();
+      const intervals = [m.cold('-0-1-2-3-4-|'), m.cold('-0-1|')];
+      const subs = ['^!', '-^---!'];
+      const expected = '--0-2|';
+      const result = m
+        .cold('01-|')
+        .pipe(
+          switchMap(i =>
+            intervals[i].pipe(
+              tap(a => a),
+              map(a => (a * 2).toString()),
+              tag('inner')
+            )
+          )
+        );
+      m.expect(result).toBeObservable(expected);
+      subs.forEach((s, i) => m.expect(intervals[i]).toHaveSubscriptions(s));
+    })
+  );
   it('should notify on next', () => {
     return new Promise(resolve => {
       let obs: Observable<number>;

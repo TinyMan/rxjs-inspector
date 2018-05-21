@@ -40,7 +40,7 @@ export class Wrapper<T> extends Subscriber<T> {
     error?: (e?: any) => void,
     complete?: () => void
   ) {
-    super(destinationOrNext, error, complete);
+    super(...[destinationOrNext, error, complete].filter(e => !!e));
     this.notifyHook(NotificationKind.Subscribe);
   }
 
