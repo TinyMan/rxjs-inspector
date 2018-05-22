@@ -8,9 +8,10 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*",
-    "watch:extension": "lerna run start --scope @rxjs-inspector/extension",
+    "watch:extension": "lerna run start --scope @rxjs-inspector/extension --stream",
     "build:extension": "lerna run build --scope @rxjs-inspector/extension --include-filtered-dependencies",
     "build:panel": "lerna run build --scope @rxjs-inspector/panel --include-filtered-dependencies",
+    "bw:panel": "ng build panel --configuration watch",
     "watch:panel": "ng serve panel",
     "build:demo": "ng build demo-app",
     "watch:demo": "ng serve demo-app"

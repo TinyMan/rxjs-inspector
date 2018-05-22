@@ -170,6 +170,10 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "baseHref": "panel"
+            },
+            "watch": {
+              "watch": true,
+              "poll": 1000
             }
           }
         },
