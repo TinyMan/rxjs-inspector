@@ -30,9 +30,13 @@ export interface Notif {
   source?: string;
   operatorName?: string;
   timestamp: number;
+  caller?: string;
+  stackId: number;
 }
 
 export class Wrapper<T> extends Subscriber<T> {
+  static stack: string[] = [];
+  static stackId = 0;
   constructor(
     private observable: Observable<T>,
     private hook: Subscriber<Notif>,
@@ -58,19 +62,37 @@ export class Wrapper<T> extends Subscriber<T> {
         ? this.observable.operator.constructor.name
         : undefined,
       timestamp: Date.now(),
+      caller: Wrapper.stack[Wrapper.stack.length - 1],
+      stackId: Wrapper.stackId,
     });
   }
+  private before() {
+    if (Wrapper.stack.length === 0) Wrapper.stackId++;
+    Wrapper.stack.push(identify(this.observable));
+  }
+  private after() {
+    Wrapper.stack.pop();
+  }
+
   _next(value: T) {
     this.notifyHook(NotificationKind.Next, value);
+    this.before();
     this.destination.next && this.destination.next(value);
+    this.after();
   }
+
   _error(err: any) {
     this.notifyHook(NotificationKind.Error, err);
+    this.before();
     this.destination.error && this.destination.error(err);
+    this.after();
   }
+
   _complete() {
     this.notifyHook(NotificationKind.Complete);
+    this.before();
     this.destination.complete && this.destination.complete();
+    this.after();
   }
 
   unsubscribe() {
