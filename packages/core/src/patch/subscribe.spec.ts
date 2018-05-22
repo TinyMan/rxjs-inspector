@@ -111,7 +111,7 @@ describe('subscribe', () => {
         .subscribe((notif: Notif) => {
           expect(notif.kind).toBe('E');
           expect(notif.observable).toBe(obs);
-          expect(notif.value).toBe(error);
+          expect(notif.value.error).toBe(error);
           resolve();
         });
       obs = throwError(error);
