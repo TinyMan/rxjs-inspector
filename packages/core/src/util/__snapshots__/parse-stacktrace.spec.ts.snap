@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseStacktrace should correlty parse a stack trace 1`] = `
+Object {
+  "col": "19",
+  "file": "http://localhost:1337/main.js",
+  "line": "641",
+  "stack": Array [
+    "Error: 0",
+    "    at MapSubscriber.project (http://localhost:1337/main.js:641:19)",
+    "    at MapSubscriber.push.../node_modules/rxjs/_esm5/internal/operators/map.js.MapSubscriber._next (http://localhost:1337/vendor.js:61785:35)",
+    "    at MapSubscriber.push.../node_modules/rxjs/_esm5/internal/Subscriber.js.Subscriber.next (http://localhost:1337/vendor.js:53584:12)",
+    "    at Wrapper.push.../packages/core/src/patch/subscribe.ts.Wrapper._next (http://localhost:1337/main.js:230:51)",
+    "    at Wrapper.push.../node_modules/rxjs/_esm5/internal/Subscriber.js.Subscriber.next (http://localhost:1337/vendor.js:53584:12)",
+    "    at TakeSubscriber.push.../node_modules/rxjs/_esm5/internal/operators/take.js.TakeSubscriber._next (http://localhost:1337/vendor.js:65380:30)",
+    "    at TakeSubscriber.push.../node_modules/rxjs/_esm5/internal/Subscriber.js.Subscriber.next (http://localhost:1337/vendor.js:53584:12)",
+    "    at Wrapper.push.../packages/core/src/patch/subscribe.ts.Wrapper._next (http://localhost:1337/main.js:230:51)",
+    "    at Wrapper.push.../node_modules/rxjs/_esm5/internal/Subscriber.js.Subscriber.next (http://localhost:1337/vendor.js:53584:12)",
+    "    at AsyncAction.dispatch [as work] (http://localhost:1337/vendor.js:56400:14)",
+  ],
+}
+`;

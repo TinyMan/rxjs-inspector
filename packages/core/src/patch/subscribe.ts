@@ -8,7 +8,7 @@ import {
   Operator,
 } from 'rxjs';
 import { share, refCount, publish } from 'rxjs/operators';
-import { tag, identify } from '../util';
+import { tag, identify, parseStackTrace } from '../util';
 import { tag as tagOperator } from '../operators';
 import { lift } from './lift';
 
@@ -82,7 +82,10 @@ export class Wrapper<T> extends Subscriber<T> {
   }
 
   _error(err: any) {
-    this.notifyHook(NotificationKind.Error, err);
+    this.notifyHook(NotificationKind.Error, {
+      error: err,
+      parsedStack: parseStackTrace(err.stack),
+    });
     this.before();
     this.destination.error && this.destination.error(err);
     this.after();
