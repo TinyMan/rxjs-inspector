@@ -1,6 +1,6 @@
 {
   "name": "@rxjs-inspector/extension",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Rxjs Inspector Devtools Extension",
   "private": true,
   "scripts": {
@@ -16,15 +16,14 @@
   "author": "TinyMan",
   "license": "MIT",
   "devDependencies": {
-    "@rxjs-inspector/core": "^0.0.1",
-    "@rxjs-inspector/devtools": "^0.0.1",
-    "@rxjs-inspector/panel": "^0.0.1",
+    "@rxjs-inspector/core": "^0.0.2-0",
+    "@rxjs-inspector/devtools": "^0.0.2-0",
+    "@rxjs-inspector/panel": "^0.0.2-0",
     "webpack": "^4.7.0",
     "webpack-chrome-extension-reloader": "^0.6.7",
     "webpack-cli": "^2.1.2",
     "webpack-merge": "^4.1.2"
   },
-  "dependencies": {},
   "peerDependencies": {
     "@rxjs-inspector/core": "^0.0.1",
     "@rxjs-inspector/devtools": "^0.0.1",

@@ -1,12 +1,12 @@
 {
   "name": "@rxjs-inspector/panel",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Rxjs Inspector Devtools Panel",
   "private": true,
   "scripts": {
-    "start":"ng serve panel",
-    "build":"ng build panel",
-    "test":"ng test panel"
+    "start": "ng serve panel",
+    "build": "ng build panel",
+    "test": "ng test panel"
   },
   "keywords": [
     "rxjs",
@@ -17,10 +17,9 @@
   "author": "TinyMan",
   "license": "MIT",
   "devDependencies": {
-    "@rxjs-inspector/core": "^0.0.1",
-    "@rxjs-inspector/devtools": "^0.0.1"
+    "@rxjs-inspector/core": "^0.0.2-0",
+    "@rxjs-inspector/devtools": "^0.0.2-0"
   },
-  "dependencies": {},
   "peerDependencies": {
     "@rxjs-inspector/core": "^0.0.1",
     "@rxjs-inspector/devtools": "^0.0.1"

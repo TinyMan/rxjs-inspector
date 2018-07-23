@@ -1,9 +1,9 @@
 {
   "name": "@rxjs-inspector/core",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Core features for rxjs-inspector",
   "scripts": {
-    "build":"tsc -p tsconfig.build.json"
+    "build": "tsc -p tsconfig.build.json"
   },
   "peerDependencies": {
     "rxjs": "^6.0.0"
