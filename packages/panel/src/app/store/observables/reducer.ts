@@ -36,8 +36,18 @@ export function reducer(
   switch (action.type) {
     case ActionsTypes.Notification:
       const now = Date.now();
+      const { id, tag, operatorName: operator, source, value } = action.payload;
       return {
-        ...adapter.upsertOne(createUpdateStmt(action.payload), state),
+        ...adapter.upsertOne(
+          {
+            id,
+            tag: tag as string,
+            operator,
+            source,
+            value,
+          },
+          state
+        ),
         history: state.history.update(action.payload.id, list =>
           (!!list ? list.unshift(action.payload) : List([action.payload]))
             .take(state.historySize)
