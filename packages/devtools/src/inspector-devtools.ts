@@ -53,10 +53,14 @@ export class InspectorDevtools {
   }
   private postBatch(batch: Notif[]) {
     if (this.extension) {
-      const event = new CustomEvent(this.extension.namespace, {
-        detail: new DevtoolsBatchEvent(batch.map(n => this.notifToEvent(n))),
-      });
-      this.window.dispatchEvent(event);
+      try {
+        const event = new CustomEvent(this.extension.namespace, {
+          detail: new DevtoolsBatchEvent(batch.map(n => this.notifToEvent(n))),
+        });
+        this.window.dispatchEvent(event);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 }
