@@ -1,4 +1,5 @@
-export function parseStackTrace(stack: string) {
+export function parseStackTrace(stack: string | undefined) {
+  if (!stack) return undefined;
   const parsed = stack.split('\n');
   const matches = parsed[1].match(/at .+\(([^\)]+):(\d+):(\d+)\)$/);
   if (matches) {
