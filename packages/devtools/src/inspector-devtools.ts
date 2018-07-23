@@ -8,6 +8,7 @@ import {
   DevtoolsInitEvent,
 } from './types';
 import { bufferTime } from 'rxjs/operators';
+import { stringify } from 'circular-json';
 function replaceErrors(key: any, value: any) {
   if (value instanceof Error) {
     let error: { [key: string]: any } = {};
@@ -46,7 +47,7 @@ export class InspectorDevtools {
     // every object passed through this interface HAVE to be clonable
     return new DevtoolsNotifEvent({
       ...notif,
-      value: JSON.stringify(notif.value, replaceErrors),
+      value: stringify(notif.value, replaceErrors),
       observable: undefined,
     });
   }
