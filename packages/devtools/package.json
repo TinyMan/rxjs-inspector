@@ -31,5 +31,8 @@
     "access": "public"
   },
   "main": "lib/index.js",
-  "typings": "lib/index.d.ts"
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "circular-json": "^0.5.5"
+  }
 }
