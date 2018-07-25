@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { interval, EMPTY, throwError, of, Observable } from 'rxjs';
-import { map, take, switchMap, filter, tap } from 'rxjs/operators';
 import { tag } from '@rxjs-inspector/core';
+import { interval } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
