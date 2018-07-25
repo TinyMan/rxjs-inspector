@@ -5,7 +5,7 @@ const version = require('../package.json').version;
 
 function setManifestVersion(content) {
   const manifest = JSON.parse(content);
-  manifest.version = version;
+  manifest.version = version.split('-')[0];
   return JSON.stringify(manifest, null, 2);
 }
 
