@@ -19,7 +19,6 @@
     "@rxjs-inspector/core": "^0.0.2",
     "@rxjs-inspector/devtools": "^0.0.2",
     "@rxjs-inspector/panel": "^0.0.2",
-    "webpack": "^4.7.0",
     "webpack-chrome-extension-reloader": "^0.6.7",
     "webpack-cli": "^2.1.2",
     "webpack-merge": "^4.1.2"
