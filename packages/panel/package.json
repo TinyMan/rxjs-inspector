@@ -1,6 +1,6 @@
 {
   "name": "@rxjs-inspector/panel",
-  "version": "0.0.2-0",
+  "version": "0.0.2",
   "description": "Rxjs Inspector Devtools Panel",
   "private": true,
   "scripts": {
@@ -17,8 +17,8 @@
   "author": "TinyMan",
   "license": "MIT",
   "devDependencies": {
-    "@rxjs-inspector/core": "^0.0.2-0",
-    "@rxjs-inspector/devtools": "^0.0.2-0"
+    "@rxjs-inspector/core": "^0.0.2",
+    "@rxjs-inspector/devtools": "^0.0.2"
   },
   "peerDependencies": {
     "@rxjs-inspector/core": "^0.0.1",
