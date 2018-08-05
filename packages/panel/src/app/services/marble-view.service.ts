@@ -89,7 +89,7 @@ export class MarbleViewService {
       this.setTranslate({
         x:
           this._translate.x -
-          ((zoomOrigin.x - this._translate.x) / oldScale * this.scale -
+          (((zoomOrigin.x - this._translate.x) / oldScale) * this.scale -
             (zoomOrigin.x - this._translate.x)),
       });
     }
@@ -145,7 +145,7 @@ export class MarbleViewService {
       this.point.y = event.clientY;
     }
 
-    const invertedSVGMatrix = this.svg.getScreenCTM().inverse();
+    const invertedSVGMatrix = this.svg.getScreenCTM()!.inverse();
 
     return this.point.matrixTransform(invertedSVGMatrix);
   }
@@ -156,7 +156,7 @@ export class MarbleViewService {
     this.setTranslate({ x: -newX });
   }
   getPointFromTime(t: number) {
-    return (t - this.startTime) / 1000 * 20 * this.scale;
+    return ((t - this.startTime) / 1000) * 20 * this.scale;
   }
 
   private setTranslate({ x = this._translate.x, y = this._translate.y } = {}) {
@@ -175,6 +175,6 @@ export class MarbleViewService {
   }
 
   public timeToPixel(t: number) {
-    return Math.round((t - this.startTime) / 1000 * 20 * this.scale);
+    return Math.round(((t - this.startTime) / 1000) * 20 * this.scale);
   }
 }
