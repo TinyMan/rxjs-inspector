@@ -115,6 +115,7 @@
   },
   "homepage": "https://github.com/TinyMan/rxjs-inspector#readme",
   "jest": {
+    "testURL": "http://localhost/",
     "moduleFileExtensions": [
       "ts",
       "js"
