@@ -114,12 +114,18 @@ export function patch(
     const original = proto.subscribe;
     proto[subscribe_patched] = new Observable<Notif>(subscriber => {
       let hidden = false;
+      let taggedChain = false;
       proto.subscribe = function subscribe<T>(
         this: Observable<T>,
         ...args: any[]
       ): Subscription {
         let wrapper: any[];
-        if (!hidden && tag(this) !== subscribe_patched) {
+        if (
+          !hidden &&
+          tag(this) !== subscribe_patched &&
+          (!!tag(this) || taggedChain)
+        ) {
+          taggedChain = true;
           wrapper = [new Wrapper(this, subscriber, ...args)];
         } else {
           hidden = true;
@@ -127,12 +133,17 @@ export function patch(
         }
         const sink = original.apply(this, wrapper) as Subscriber<T>;
         hidden = false;
+        taggedChain = false;
         return sink;
       };
       return () => {
         proto.subscribe = original;
       };
-    }).pipe(publish(), refCount(), tagOperator(subscribe_patched));
+    }).pipe(
+      publish(),
+      refCount(),
+      tagOperator(subscribe_patched)
+    );
   }
   return proto[subscribe_patched]!;
 }

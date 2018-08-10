@@ -38,7 +38,11 @@ describe('subscribe', () => {
     return new Promise(resolve => {
       const obs = of(1, 2, 3);
       obs
-        .pipe(bufferCount(3), map(values => expect(values).toEqual([1, 2, 3])))
+        .pipe(
+          bufferCount(3),
+          map(values => expect(values).toEqual([1, 2, 3])),
+          tag('test')
+        )
         .subscribe(() => resolve());
     });
   });
@@ -58,7 +62,9 @@ describe('subscribe', () => {
     return new Promise(resolve => {
       patch(Observable.prototype).subscribe();
       const s = new Subject();
-      s.asObservable().subscribe({ complete: () => resolve() });
+      s.asObservable()
+        .pipe(tag('test'))
+        .subscribe({ complete: () => resolve() });
       s.complete();
     });
   });
@@ -69,17 +75,16 @@ describe('subscribe', () => {
       const intervals = [m.cold('-0-1-2-3-4-|'), m.cold('-0-1|')];
       const subs = ['^!', '-^---!'];
       const expected = '--0-2|';
-      const result = m
-        .cold('01-|')
-        .pipe(
-          switchMap(i =>
-            intervals[i].pipe(
-              tap(a => a),
-              map(a => (a * 2).toString()),
-              tag('inner')
-            )
+      const result = m.cold('01-|').pipe(
+        switchMap(i =>
+          intervals[i].pipe(
+            tap(a => a),
+            map(a => (a * 2).toString()),
+            tag('inner')
           )
-        );
+        ),
+        tag('outer')
+      );
       m.expect(result).toBeObservable(expected);
       subs.forEach((s, i) => m.expect(intervals[i]).toHaveSubscriptions(s));
     })
@@ -97,7 +102,7 @@ describe('subscribe', () => {
           resolve();
         });
 
-      obs = of(0);
+      obs = of(0).pipe(tag('test'));
       obs.subscribe();
     });
   });
@@ -114,7 +119,7 @@ describe('subscribe', () => {
           expect(notif.value.error).toBe(error);
           resolve();
         });
-      obs = throwError(error);
+      obs = throwError(error).pipe(tag('test'));
       obs.subscribe();
     });
   });
@@ -137,7 +142,7 @@ describe('subscribe', () => {
             }
           });
         });
-      obs = of(0);
+      obs = of(0).pipe(tag('test'));
       obs.subscribe({ complete });
     });
   });
@@ -152,7 +157,7 @@ describe('subscribe', () => {
           expect(notif.value).toBe(undefined);
           resolve();
         });
-      obs = of(0);
+      obs = of(0).pipe(tag('test'));
       obs.subscribe();
     });
   });
@@ -167,7 +172,7 @@ describe('subscribe', () => {
           expect(notif.value).toBe(undefined);
           resolve();
         });
-      obs = of(0);
+      obs = of(0).pipe(tag('test'));
       const sub = obs.subscribe();
       sub.unsubscribe();
     });
@@ -189,7 +194,10 @@ describe('subscribe', () => {
   it('should report the source observable', () => {
     return new Promise(resolve => {
       const source = of(1);
-      const obs = source.pipe(map(n => n * 2));
+      const obs = source.pipe(
+        map(n => n * 2),
+        tag('test')
+      );
       const next = jest.fn();
       patch(Observable.prototype)
         .pipe(filter(n => n.kind === NotificationKind.Next))
