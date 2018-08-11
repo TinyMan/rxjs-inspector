@@ -5,6 +5,7 @@ export type MessageHandler = (message: any) => void;
 
 export interface DevtoolsHook {
   namespace: string;
+  output_namespace: string;
 }
 
 export interface IDevtoolsEvent {
@@ -21,7 +22,15 @@ export class DevtoolsBatchEvent implements IDevtoolsEvent {
 export class DevtoolsInitEvent implements IDevtoolsEvent {
   readonly type = EventType.INIT;
 }
+export class DevtoolsStartEvent implements IDevtoolsEvent {
+  readonly type = EventType.START;
+}
+export class DevtoolsDisconnectEvent implements IDevtoolsEvent {
+  readonly type = EventType.DISCONNECT;
+}
 export type DevtoolsEvent =
   | DevtoolsNotifEvent
   | DevtoolsBatchEvent
-  | DevtoolsInitEvent;
+  | DevtoolsInitEvent
+  | DevtoolsStartEvent
+  | DevtoolsDisconnectEvent;

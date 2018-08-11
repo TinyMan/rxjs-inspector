@@ -12,7 +12,7 @@ const NAMESPACE =
     .toString()
     .split('.')[1]
     .substr(0, 6);
-
+const OUTPUT_NAMESPACE = NAMESPACE + '-output';
 interface Message extends CustomEvent {
   detail: {
     type: string;
@@ -24,8 +24,12 @@ window.addEventListener(
   NAMESPACE,
   ((): EventListener => {
     let port: chrome.runtime.Port | undefined;
-    const messageHandler = (message: any) =>
+    const messageHandler = (message: any) => {
       console.log('Message received from bg', message);
+      window.dispatchEvent(
+        new CustomEvent(OUTPUT_NAMESPACE, { detail: message })
+      );
+    };
     return ((message: Message) => {
       console.log('Received message from injected script', message.detail);
       if (message.detail.type === EventType.INIT) {
@@ -46,14 +50,20 @@ window.addEventListener(
 );
 
 addScript(
-  `;(${setup.toString()}(window, '${NAMESPACE}', '${EXTENSION_KEY}'))`,
+  `;(${setup.toString()}(window, '${NAMESPACE}', '${OUTPUT_NAMESPACE}', '${EXTENSION_KEY}'))`,
   true
 );
 
-function setup(window: Window, namespace: string, key: string) {
+function setup(
+  window: Window,
+  namespace: string,
+  output_namespace: string,
+  key: string
+) {
   Object.defineProperty(window, key, {
     value: {
       namespace,
+      output_namespace,
     } as DevtoolsHook,
   });
 }

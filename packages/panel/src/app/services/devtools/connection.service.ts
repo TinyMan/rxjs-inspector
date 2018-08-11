@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, fromEventPattern } from 'rxjs';
-import { map, takeUntil, share } from 'rxjs/operators';
-import { MessageHandler } from '@rxjs-inspector/devtools';
+import { map, takeUntil, share, tap } from 'rxjs/operators';
+import { MessageHandler, ConnectionNames } from '@rxjs-inspector/devtools';
 
 /**
  * Return an observable wrapping the given chrome event
@@ -29,12 +29,15 @@ export class ConnectionService {
     this.connection = chrome.runtime.connect(
       EXT_ID,
       {
-        name: chrome.devtools.inspectedWindow.tabId.toString(),
+        name: chrome.devtools
+          ? chrome.devtools.inspectedWindow.tabId.toString()
+          : ConnectionNames.PANEL,
       }
     );
 
     this.messages$ = observeChromeEvent(this.connection.onMessage).pipe(
       map(([message]) => message),
+      tap(m => console.log('Message from bg', m)),
       takeUntil(observeChromeEvent(this.connection.onDisconnect)),
       share()
     );

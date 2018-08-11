@@ -7,6 +7,8 @@ export {
   DevtoolsEvent,
   DevtoolsBatchEvent,
   DevtoolsNotifEvent,
+  DevtoolsStartEvent,
+  DevtoolsDisconnectEvent,
 } from './types';
 
 export function createInspectorDevtools() {
