@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ConnectionService } from './connection.service';
 import { Store, Action } from '@ngrx/store';
-import { NotificationAction } from '../../store/observables/action';
+import { NotificationAction, InitAction } from '../../store/observables/action';
 import { Notif } from '@rxjs-inspector/core';
 import {
   EventType,
@@ -25,6 +25,8 @@ function toAction(e: DevtoolsEvent): Action {
         ...e.notif,
         value: e.notif.value && JSON.parse(e.notif.value),
       } as Notif);
+    case EventType.INIT:
+      return new InitAction();
     case EventType.BATCH:
       return new BatchAction(e.batch.map(toAction));
     default:

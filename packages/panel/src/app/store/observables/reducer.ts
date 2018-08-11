@@ -67,6 +67,11 @@ export function reducer(
         ...state,
         sticky: action.payload,
       };
+    case ActionsTypes.Init:
+      return {
+        ...adapter.removeAll(state),
+        history: state.history.clear(),
+      };
     default:
       return state;
   }
