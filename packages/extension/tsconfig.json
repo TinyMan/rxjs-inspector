@@ -4,6 +4,7 @@
     "rootDir": "..",
     "outDir": "lib",
     "declaration": false,
+    "declarationMap": false,
     "types": ["chrome"]
   }
 }
