@@ -11,8 +11,3 @@ const production = {
   },
 };
 module.exports = Object.keys(common).map(k => merge(common[k], production[k]));
-
-require('fs').writeFileSync(
-  require('path').resolve(__dirname, './webpack.json'),
-  JSON.stringify(module.exports, null, 4)
-);
