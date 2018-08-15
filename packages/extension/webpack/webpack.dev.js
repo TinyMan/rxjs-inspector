@@ -3,8 +3,12 @@ const common = require('./webpack.base.js');
 const webpack = require('webpack');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 
-module.exports = merge(common, {
-  devtool: 'inline-source-map',
-  mode: 'development',
-  plugins: [new ChromeExtensionReloader()],
-});
+const production = {
+  panel: {},
+  extension: {
+    devtool: 'inline-source-map',
+    mode: 'development',
+    plugins: [new ChromeExtensionReloader()],
+  },
+};
+module.exports = Object.keys(common).map(k => merge(common[k], production[k]));

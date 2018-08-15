@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "webpack --watch --config webpack/webpack.dev.js",
-    "build": "webpack --config webpack/webpack.prod.js"
+    "build": "webpack --config webpack/webpack.prod.js --progress --bail"
   },
   "keywords": [
     "rxjs",

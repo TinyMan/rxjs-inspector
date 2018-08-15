@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "ng serve panel",
-    "build": "ng build panel",
+    "build": "webpack --config ./webpack.js --progress --profile --bail",
     "test": "ng test panel"
   },
   "keywords": [
