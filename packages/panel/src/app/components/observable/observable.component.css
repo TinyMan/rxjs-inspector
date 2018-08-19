@@ -21,6 +21,11 @@ div app-value {
   fill: rgb(130, 215, 54);
 }
 
+.highlighted .next {
+  stroke: orangered;
+  stroke-width: 2;
+  fill: rgb(255, 166, 97);
+}
 .error line {
   stroke: red;
   stroke-width: 2;
@@ -29,4 +34,8 @@ div app-value {
 .complete line {
   stroke: black;
   stroke-width: 2;
+}
+
+.value {
+  cursor: pointer;
 }

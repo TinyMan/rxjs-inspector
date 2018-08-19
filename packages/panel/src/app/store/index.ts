@@ -43,10 +43,27 @@ export const selectCurrentObservable = createSelector(
   (entities, id) => entities[id!]
 );
 
-export const selectCurrentObservableValue = createSelector(
-  selectCurrentObservable,
-  observable => observable
+export const selectHighlightedNotif = createSelector(
+  selectObservablesState,
+  state => state.highlightedNotif
 );
+
+export const selectDisplayedValue = createSelector(
+  selectHighlightedNotif,
+  selectCurrentObservable,
+  (highlighted, obs) =>
+    !!highlighted &&
+    !!highlighted.value &&
+    typeof highlighted.value === 'object'
+      ? highlighted.value
+      : obs
+);
+
+export const isHighlightedNotif = (notif: Notif) =>
+  createSelector(
+    selectHighlightedNotif,
+    highlighted => !!highlighted && notif.id === highlighted.id
+  );
 
 export const selectHistory = createSelector(selectObservablesState, getHistory);
 

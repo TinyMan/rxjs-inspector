@@ -18,6 +18,7 @@ export interface State extends EntityState<ObservableState> {
   historyMaxAge: number; // maximum age of events in the history
   historySize: number; // maximum number of events in the history
   sticky: boolean; // if the marble diagram is sticky to the flowing time
+  highlightedNotif: Notif | null;
 }
 
 export const adapter = createEntityAdapter<ObservableState>();
@@ -27,6 +28,7 @@ export const initialState: State = adapter.getInitialState({
   historyMaxAge: 300000, // 300 seconds
   historySize: 200,
   sticky: true,
+  highlightedNotif: null,
 });
 
 export function reducer(
@@ -36,11 +38,17 @@ export function reducer(
   switch (action.type) {
     case ActionsTypes.Notification:
       const now = Date.now();
-      const { id, tag, operatorName: operator, source, value } = action.payload;
+      const {
+        observableId,
+        tag,
+        operatorName: operator,
+        source,
+        value,
+      } = action.payload;
       return {
         ...adapter.upsertOne(
           {
-            id,
+            id: observableId,
             tag: tag as string,
             operator,
             source,
@@ -48,7 +56,7 @@ export function reducer(
           },
           state
         ),
-        history: state.history.update(action.payload.id, list =>
+        history: state.history.update(action.payload.observableId, list =>
           (!!list ? list.unshift(action.payload) : List([action.payload]))
             .take(state.historySize)
             .takeWhile(
@@ -61,6 +69,7 @@ export function reducer(
       return {
         ...state,
         selectedObservableId: action.payload,
+        highlightedNotif: null,
       };
     case ActionsTypes.StickyUpdate:
       return {
@@ -72,15 +81,20 @@ export function reducer(
         ...adapter.removeAll(state),
         history: state.history.clear(),
       };
+    case ActionsTypes.NotifClick:
+      return {
+        ...state,
+        highlightedNotif: action.payload,
+      };
     default:
       return state;
   }
 }
 
 export function createUpdateStmt(notif: Notif): Update<ObservableState> {
-  const { id, tag, operatorName: operator, source, value } = notif;
+  const { observableId, tag, operatorName: operator, source, value } = notif;
   return {
-    id,
+    id: observableId,
     changes: {
       tag: tag as string,
       operator,

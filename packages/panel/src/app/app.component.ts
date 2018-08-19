@@ -1,16 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DevtoolsService } from './services/devtools/devtools.service';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Action, Store } from '@ngrx/store';
-import { ObservableState } from './store/observables';
-import {
-  selectCurrentObservable,
-  selectCurrentObservableHistory,
-  selectCurrentObservableValue,
-} from './store';
-import { List } from 'immutable';
-import { Notif } from '@rxjs-inspector/core';
+import { Observable } from 'rxjs';
+import { Action, Store, select } from '@ngrx/store';
+import { selectDisplayedValue } from './store';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +11,9 @@ import { Notif } from '@rxjs-inspector/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  public value$: Observable<object | null>;
+  public value$: Observable<any>;
   constructor(private devtools: DevtoolsService, private store: Store<Action>) {
-    this.value$ = this.store.select(selectCurrentObservableValue);
+    this.value$ = this.store.pipe(select(selectDisplayedValue));
   }
   ngOnInit(): void {}
 }

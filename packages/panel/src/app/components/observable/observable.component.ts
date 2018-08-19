@@ -12,11 +12,17 @@ import { List } from 'immutable';
 import { Notif, NotificationKind } from '@rxjs-inspector/core';
 import { interval, Subject, Observable, combineLatest } from 'rxjs';
 import { takeUntil, map, share, shareReplay } from 'rxjs/operators';
-import { Action, Store } from '@ngrx/store';
-import { selectObservableHistory } from '../../store';
+import { Action, Store, select, createSelector } from '@ngrx/store';
+import {
+  selectObservableHistory,
+  selectObservablesState,
+  selectHighlightedNotif,
+  isHighlightedNotif,
+} from '../../store';
 import { START_TIME } from '../marble-view/marble-view.component';
 import { Inject } from '@angular/core';
 import { MarbleViewService } from '../../services/marble-view.service';
+import { NotifClickAction } from '../../store/observables/action';
 
 @Component({
   selector: '[app-observable]',
@@ -25,7 +31,8 @@ import { MarbleViewService } from '../../services/marble-view.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ObservableComponent implements OnChanges {
-  @Input() observable!: ObservableState;
+  @Input()
+  observable!: ObservableState;
 
   public history$!: Observable<List<Notif>>;
   private destroy$ = new Subject();
@@ -88,5 +95,13 @@ export class ObservableComponent implements OnChanges {
 
   public trackByIndex(i: number, v: any) {
     return i;
+  }
+
+  notifClick(notif: Notif) {
+    this.store.dispatch(new NotifClickAction(notif));
+  }
+
+  isHighlighted(notif: Notif): Observable<boolean> {
+    return this.store.pipe(select(isHighlightedNotif(notif)));
   }
 }

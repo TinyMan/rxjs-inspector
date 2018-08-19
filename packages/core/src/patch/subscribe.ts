@@ -24,7 +24,8 @@ export const enum NotificationKind {
 export interface Notif {
   observable?: Observable<any>;
   tag?: string | symbol;
-  id: string;
+  observableId: string;
+  id: number;
   kind: NotificationKind;
   value?: any;
   source?: string;
@@ -33,7 +34,7 @@ export interface Notif {
   caller?: string;
   stackId: number;
 }
-
+let nextId = 0;
 export class Wrapper<T> extends Subscriber<T> {
   static stack: string[] = [];
   static stackId = 0;
@@ -51,7 +52,8 @@ export class Wrapper<T> extends Subscriber<T> {
   private notifyHook(kind: NotificationKind, value?: any) {
     this.hook.next({
       observable: this.observable,
-      id: identify(this.observable),
+      observableId: identify(this.observable),
+      id: nextId++,
       kind,
       tag: tag(this.observable),
       value,

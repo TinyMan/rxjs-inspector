@@ -6,6 +6,7 @@ export enum ActionsTypes {
   SelectObservable = '[Observable List] Select Observable',
   StickyUpdate = '[Marble Settings] Update Sticky Setting',
   Init = '[Devtools] Init event',
+  NotifClick = '[Marble View] Value click',
 }
 export class NotificationAction implements Action {
   readonly type = ActionsTypes.Notification;
@@ -23,8 +24,14 @@ export class InitAction implements Action {
   readonly type = ActionsTypes.Init;
 }
 
+export class NotifClickAction implements Action {
+  readonly type = ActionsTypes.NotifClick;
+  constructor(public payload: Notif) {}
+}
+
 export type ObservableActionsUnion =
   | NotificationAction
   | SelectObservableAction
   | StickyUpdateAction
-  | InitAction;
+  | InitAction
+  | NotifClickAction;
