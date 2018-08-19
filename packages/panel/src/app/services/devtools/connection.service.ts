@@ -16,7 +16,7 @@ function observeChromeEvent(
   );
 }
 
-const EXT_ID = 'ikbpcnbldccnepheoagfjgcigncidfbp';
+const EXT_ID = chrome.runtime.id || 'ikbpcnbldccnepheoagfjgcigncidfbp';
 @Injectable({
   providedIn: 'root',
 })
