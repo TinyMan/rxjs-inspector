@@ -13,7 +13,7 @@
       class="value" (click)="notifClick(notif)" [class.highlighted]="isHighlighted(notif) | async">
       <svg:g *ngIf="isNext(notif)">
         <svg:circle r="7" cy="10" cx="10" class="next" />
-        <svg:text x="10" y="10" text-anchor="middle" stroke="black" alignment-baseline="middle" font-size="10">{{notif.value}}</svg:text>
+        <svg:text x="10" y="10" text-anchor="middle" stroke="black" alignment-baseline="middle" font-size="10" *ngIf="isPrimitive(notif.value)">{{notif.value}}</svg:text>
       </svg:g>
       <svg:g class="error" *ngIf="isError(notif)">
         <svg:line x1="5" x2="15" y1="5" y2="15" />

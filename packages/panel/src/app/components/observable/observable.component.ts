@@ -104,4 +104,7 @@ export class ObservableComponent implements OnChanges {
   isHighlighted(notif: Notif): Observable<boolean> {
     return this.store.pipe(select(isHighlightedNotif(notif)));
   }
+  isPrimitive(value: any) {
+    return value !== Object(value);
+  }
 }
