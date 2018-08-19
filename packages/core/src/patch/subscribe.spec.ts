@@ -23,14 +23,14 @@ describe('subscribe', () => {
     const original = Object.assign({}, Observable.prototype);
     const result = patch(Observable.prototype);
     expect(patch(Observable.prototype)).toBe(result);
-    expect(Observable.prototype.subscribe).toBe(original.subscribe);
     const sub = result.subscribe();
     const sub1 = result.subscribe();
     expect(Observable.prototype.subscribe).not.toBe(original.subscribe);
     sub1.unsubscribe();
     expect(Observable.prototype.subscribe).not.toBe(original.subscribe);
     sub.unsubscribe();
-    expect(Observable.prototype.subscribe).toBe(original.subscribe);
+    // the underlying subscription is never unsubscribed, the prototype should remain patched
+    expect(Observable.prototype.subscribe).not.toBe(original.subscribe);
   });
 
   it('should not break next', () => {
