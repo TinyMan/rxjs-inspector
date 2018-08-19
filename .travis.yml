@@ -1,13 +1,15 @@
-language:
-  node_js
+language: node_js
 node_js:
   - 10
   - 8
 notifications:
   email: false
+before_install:
+  - npm i -g npm@version-number
 install:
-  - npm install
+  - npm ci
   - lerna bootstrap --ci
+before_script:
   - npm install -g codecov
 script:
   - npm test
