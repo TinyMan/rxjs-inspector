@@ -13,8 +13,3 @@ ngx-json-viewer {
   grid-column: 3;
   overflow: auto;
 }
-
-::ng-deep .ngx-json-viewer {
-  overflow: unset !important;
-  height: unset !important;
-}

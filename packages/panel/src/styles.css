@@ -6,3 +6,15 @@ app-root {
   margin: 0;
   padding: 0;
 }
+
+ngx-json-viewer .ngx-json-viewer {
+  overflow: unset !important;
+  height: unset !important;
+}
+
+.ngx-json-viewer .segment-type-object > .segment-main,
+.ngx-json-viewer .segment-type-array > .segment-main {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
