@@ -1,13 +1,11 @@
 import {
-  of,
   Observable,
-  Notification,
   Subscription,
   PartialObserver,
   Subscriber,
-  Operator,
+  ConnectableObservable,
 } from 'rxjs';
-import { share, refCount, publish } from 'rxjs/operators';
+import { publish } from 'rxjs/operators';
 import { tag, identify, parseStackTrace } from '../util';
 import { tag as tagOperator } from '../operators';
 import { lift } from './lift';
@@ -108,7 +106,7 @@ export class Wrapper<T> extends Subscriber<T> {
 
 export function patch(
   proto: typeof Observable.prototype & {
-    [subscribe_patched]?: Observable<Notif>;
+    [subscribe_patched]?: ConnectableObservable<Notif>;
   }
 ) {
   if (!proto.hasOwnProperty(subscribe_patched)) {
@@ -140,12 +138,13 @@ export function patch(
       };
       return () => {
         proto.subscribe = original;
+        console.log('unsubscribe');
       };
     }).pipe(
       publish(),
-      refCount(),
       tagOperator(subscribe_patched)
-    );
+    ) as ConnectableObservable<Notif>;
   }
+  proto[subscribe_patched]!.connect();
   return proto[subscribe_patched]!;
 }
