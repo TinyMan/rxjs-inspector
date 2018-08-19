@@ -80,6 +80,8 @@ export function reducer(
       return {
         ...adapter.removeAll(state),
         history: state.history.clear(),
+        selectedObservableId: null,
+        highlightedNotif: null,
       };
     case ActionsTypes.NotifClick:
       return {
