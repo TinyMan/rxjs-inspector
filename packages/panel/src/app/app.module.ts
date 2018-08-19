@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+
 import { AppComponent } from './app.component';
 import { ObservableListComponent } from './components/observable-list/observable-list.component';
 import { reducers, State, enableBatchReducer } from './store';
@@ -34,6 +36,7 @@ export const metaReducers: MetaReducer<State>[] = [enableBatchReducer];
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({ maxAge: 10 }),
+    NgxJsonViewerModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

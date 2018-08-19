@@ -14,4 +14,8 @@
   <span class="description">Flattening 1: every 5 seconds, switch to new interval observable that emits every 0.5s</span>
   <span class="value">Value: {{ flattening1$ | async }}</span>
 </div>
+<div class="example">
+  <span class="description">Complexe json value</span>
+  <span class="value">Value: {{ (json$ | async) | json}}</span>
+</div>
 <router-outlet></router-outlet>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { tag } from '@rxjs-inspector/core';
 import { interval } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
+import { Parent } from './types';
 
 @Component({
   selector: 'app-root',
@@ -26,9 +27,17 @@ export class AppComponent {
   flattening1$ = this.intervalSource$.pipe(
     filter(i => i % 5 === 0),
     switchMap(i =>
-      interval(500).pipe(map(a => a * 2), tag('flattening 1: inner' + i))
+      interval(500).pipe(
+        map(a => a * 2),
+        tag('flattening 1: inner' + i)
+      )
     ),
     tag('flattening 1')
+  );
+
+  json$ = this.intervalSource$.pipe(
+    map(i => new Parent()),
+    tag('complexe json')
   );
   constructor() {}
 }

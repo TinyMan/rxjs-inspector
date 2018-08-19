@@ -7,6 +7,7 @@ import { ObservableState } from './store/observables';
 import {
   selectCurrentObservable,
   selectCurrentObservableHistory,
+  selectCurrentObservableValue,
 } from './store';
 import { List } from 'immutable';
 import { Notif } from '@rxjs-inspector/core';
@@ -18,9 +19,9 @@ import { Notif } from '@rxjs-inspector/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private devtools: DevtoolsService,
-    private store: Store<Action>
-  ) {}
+  public value$: Observable<object | null>;
+  constructor(private devtools: DevtoolsService, private store: Store<Action>) {
+    this.value$ = this.store.select(selectCurrentObservableValue);
+  }
   ngOnInit(): void {}
 }

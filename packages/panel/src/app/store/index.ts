@@ -43,6 +43,11 @@ export const selectCurrentObservable = createSelector(
   (entities, id) => entities[id!]
 );
 
+export const selectCurrentObservableValue = createSelector(
+  selectCurrentObservable,
+  observable => observable
+);
+
 export const selectHistory = createSelector(selectObservablesState, getHistory);
 
 export const selectObservableHistory = (id: string) =>
