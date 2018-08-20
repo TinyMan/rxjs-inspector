@@ -1,6 +1,6 @@
 {
   "name": "@rxjs-inspector/devtools",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Rxjs Inspector devtools package",
   "scripts": {
     "build": "tsc -p tsconfig.build.json"
@@ -13,7 +13,7 @@
   "author": "TinyMan",
   "license": "MIT",
   "devDependencies": {
-    "@rxjs-inspector/core": "^0.0.5"
+    "@rxjs-inspector/core": "^0.0.6"
   },
   "peerDependencies": {
     "@rxjs-inspector/core": "^0.0.1",
