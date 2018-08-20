@@ -10,6 +10,8 @@
     "lint": "tslint --project tsconfig.json **/*.ts --exclude node_modules/**/*",
     "watch:extension": "lerna run start --scope @rxjs-inspector/extension --stream",
     "build:extension": "lerna run build --scope @rxjs-inspector/extension",
+    "build:core": "lerna run build --scope @rxjs-inspector/core",
+    "build:devtools": "lerna run build --scope @rxjs-inspector/devtools",
     "build:panel": "lerna run build --scope @rxjs-inspector/panel --include-filtered-dependencies",
     "bw:panel": "ng build panel --configuration watch",
     "watch:panel": "ng serve panel",
