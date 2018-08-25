@@ -31,6 +31,7 @@ export interface Notif {
   timestamp: number;
   caller?: string;
   stackId: number;
+  frameId: number;
 }
 let nextId = 0;
 export class Wrapper<T> extends Subscriber<T> {
@@ -64,6 +65,7 @@ export class Wrapper<T> extends Subscriber<T> {
       timestamp: Date.now(),
       caller: Wrapper.stack[Wrapper.stack.length - 1],
       stackId: Wrapper.stackId,
+      frameId: -1,
     });
   }
   private before() {

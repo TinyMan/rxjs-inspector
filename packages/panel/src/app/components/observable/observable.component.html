@@ -9,7 +9,7 @@
   </svg:g>
   <svg:g transform="translate(0 30)">
     <svg:line x1="10" x2="100%" y1="10" y2="10" class="line" sticky="x" />
-    <svg:g *ngFor="let notif of (history$ | async); trackBy: trackByIndex" [attr.transform]="'translate(' + marbleViewService.timeToPixel(notif.timestamp) + ')'"
+    <svg:g *ngFor="let notif of (history$ | async); trackBy: trackByIndex" [attr.transform]="'translate(' + marbleViewService.notifToPixel(notif) + ')'"
       class="value" (click)="notifClick(notif)" [class.highlighted]="isHighlighted(notif) | async">
       <svg:g *ngIf="isNext(notif)">
         <svg:circle r="7" cy="10" cx="10" class="next" />

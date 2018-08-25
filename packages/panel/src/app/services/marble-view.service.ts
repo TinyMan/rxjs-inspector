@@ -13,10 +13,12 @@ import {
   switchMap,
   filter,
   takeUntil,
+  withLatestFrom,
 } from 'rxjs/operators';
-import { Action, Store } from '@ngrx/store';
-import { selectSticky } from '../store';
+import { Action, Store, select } from '@ngrx/store';
+import { selectSticky, selectMaxFrameId } from '../store';
 import { StickyUpdateAction } from '../store/observables/action';
+import { Notif } from '@rxjs-inspector/core';
 
 const animationFrame$ = interval(0, animationFrameScheduler).pipe(
   publish(),
@@ -30,7 +32,9 @@ export class MarbleViewService {
     return this._scale;
   }
   public notify$ = new BehaviorSubject(null);
-  public startTime = Date.now();
+  public startFrame = 0;
+  public pixelPerEvent = 20;
+  public windowWidth = 1000;
 
   private point?: SVGPoint;
   public svg?: SVGSVGElement;
@@ -49,10 +53,15 @@ export class MarbleViewService {
     )
       .pipe(
         switchMap(
-          ([sticky, svg]) => (!sticky || !svg ? NEVER : animationFrame$)
+          ([sticky, svg]) =>
+            !sticky || !svg
+              ? NEVER
+              : animationFrame$.pipe(
+                  withLatestFrom(this.store.pipe(select(selectMaxFrameId)))
+                )
         )
       )
-      .subscribe(() => this.stick());
+      .subscribe(([, maxFrame]) => this.stick(maxFrame));
   }
   public notify() {
     this.notify$.next(null);
@@ -150,13 +159,15 @@ export class MarbleViewService {
     return this.point.matrixTransform(invertedSVGMatrix);
   }
 
-  private stick() {
+  private stick(maxFrame: number) {
     if (!this.svg || this.dragging) return;
-    const newX = Math.round(this.getPointFromTime(Date.now()) - 940);
+    const newX =
+      this.frameToPixel(maxFrame) - this.windowWidth + 2 * this.pixelPerEvent; // Math.round(this.getPointFromTime(Date.now()) - 940);
     this.setTranslate({ x: -newX });
   }
-  getPointFromTime(t: number) {
-    return ((t - this.startTime) / 1000) * 20 * this.scale;
+
+  private getPointFromFrame(f: number) {
+    return (f - this.startFrame) * this.pixelPerEvent * this.scale;
   }
 
   private setTranslate({ x = this._translate.x, y = this._translate.y } = {}) {
@@ -169,12 +180,15 @@ export class MarbleViewService {
       );
     }
   }
-  public isInWindow(t: number) {
-    const p = this.timeToPixel(t);
-    return p > -this._translate.x - 20 && p < -this._translate.x + 1020;
+  public isInWindow(n: Notif) {
+    const p = this.notifToPixel(n) + this.pixelPerEvent;
+    return p > -this._translate.x && p < -this._translate.x + this.windowWidth;
   }
 
-  public timeToPixel(t: number) {
-    return Math.round(((t - this.startTime) / 1000) * 20 * this.scale);
+  public notifToPixel(n: Notif) {
+    return this.frameToPixel(n.frameId);
+  }
+  public frameToPixel(f: number) {
+    return Math.round(this.getPointFromFrame(f));
   }
 }

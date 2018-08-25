@@ -15,9 +15,6 @@ import { switchMap, filter, share } from 'rxjs/operators';
 import { MarbleViewService } from '../../services/marble-view.service';
 import { StickyUpdateAction } from '../../store/observables/action';
 
-export function getTime() {
-  return Date.now();
-}
 export const START_TIME = new InjectionToken<number>('Start time');
 
 @Component({

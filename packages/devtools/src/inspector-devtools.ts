@@ -1,5 +1,5 @@
 import { setup, Notif } from '@rxjs-inspector/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, interval, asyncScheduler, of } from 'rxjs';
 import { EXTENSION_KEY, EventType } from './constants';
 import {
   DevtoolsHook,
@@ -8,7 +8,7 @@ import {
   DevtoolsInitEvent,
   IDevtoolsEvent,
 } from './types';
-import { bufferTime } from 'rxjs/operators';
+import { bufferTime, bufferWhen, switchMap } from 'rxjs/operators';
 import { stringify } from 'circular-json';
 function replaceErrors(key: any, value: any) {
   if (value instanceof Error) {
@@ -62,7 +62,11 @@ export class InspectorDevtools {
   private start() {
     if (!this.subscription && this.notifications$) {
       this.subscription = this.notifications$
-        .pipe(bufferTime(50))
+        .pipe(
+          bufferWhen(() => interval(0, asyncScheduler)),
+          switchMap((buf, i) => of(...buf.map(n => ((n.frameId = i), n)))),
+          bufferTime(50)
+        )
         .subscribe(buf => buf.length > 0 && this.postBatch(buf));
     }
   }

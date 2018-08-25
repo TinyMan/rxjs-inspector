@@ -50,12 +50,8 @@ export class ObservableComponent implements OnChanges {
       ).pipe(
         map(([, history]) =>
           history
-            .skipUntil(
-              n => !!n && this.marbleViewService.isInWindow(n.timestamp)
-            )
-            .takeWhile(
-              n => !!n && this.marbleViewService.isInWindow(n.timestamp)
-            )
+            .skipUntil(n => !!n && this.marbleViewService.isInWindow(n))
+            .takeWhile(n => !!n && this.marbleViewService.isInWindow(n))
             .toList()
         ),
         shareReplay(1)
@@ -82,17 +78,6 @@ export class ObservableComponent implements OnChanges {
   isSubscribe(notif: Notif) {
     return notif.kind === NotificationKind.Subscribe;
   }
-  getMinX(list: List<Notif> | undefined) {
-    return list
-      ? this.marbleViewService.timeToPixel(list.last().timestamp) - 50
-      : 0;
-  }
-  getMaxX(list: List<Notif> | undefined) {
-    return list
-      ? this.marbleViewService.timeToPixel(list.first().timestamp) + 50
-      : 0;
-  }
-
   public trackByIndex(i: number, v: any) {
     return i;
   }

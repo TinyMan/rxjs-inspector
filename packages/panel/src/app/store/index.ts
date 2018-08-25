@@ -81,6 +81,11 @@ export const selectSourcesObservables = (id: string) =>
 
 export const selectSticky = createSelector(selectObservablesState, getStricky);
 
+export const selectMaxFrameId = createSelector(
+  selectCurrentObservableHistory,
+  h => h.first().frameId
+);
+
 function getSources(
   entities: { [id: string]: ObservableState },
   id: string
