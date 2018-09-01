@@ -9,6 +9,7 @@ import { publish } from 'rxjs/operators';
 import { tag, identify, parseStackTrace } from '../util';
 import { tag as tagOperator } from '../operators';
 import { lift } from './lift';
+import { Stack, getStack, setStack } from '../stack';
 
 export const subscribe_patched = Symbol('subscribe patch');
 
@@ -30,13 +31,19 @@ export interface Notif {
   operatorName?: string;
   timestamp: number;
   caller?: string;
-  stackId: number;
+  stackId?: number;
   frameId: number;
 }
+
 let nextId = 0;
 export class Wrapper<T> extends Subscriber<T> {
-  static stack: string[] = [];
-  static stackId = 0;
+  private inheritStack() {
+    return (
+      (this.observable.source && getStack(this.observable.source)) ||
+      (getStack(this.observable) && getStack(this.observable)!.getNext())
+    );
+  }
+  private stack?: Stack;
   constructor(
     private observable: Observable<T>,
     private hook: Subscriber<Notif>,
@@ -45,7 +52,9 @@ export class Wrapper<T> extends Subscriber<T> {
     complete?: () => void
   ) {
     super(...[destinationOrNext, error, complete].filter(e => !!e));
+    this.before();
     this.notifyHook(NotificationKind.Subscribe);
+    this.after();
   }
 
   private notifyHook(kind: NotificationKind, value?: any) {
@@ -63,46 +72,49 @@ export class Wrapper<T> extends Subscriber<T> {
         ? this.observable.operator.constructor.name
         : undefined,
       timestamp: Date.now(),
-      caller: Wrapper.stack[Wrapper.stack.length - 1],
-      stackId: Wrapper.stackId,
+      caller: this.stack && this.stack[this.stack.length - 1],
+      stackId: this.stack && this.stack.id,
       frameId: -1,
     });
   }
   private before() {
-    if (Wrapper.stack.length === 0) Wrapper.stackId++;
-    Wrapper.stack.push(identify(this.observable));
+    this.stack = this.inheritStack() || Stack.create();
+    this.stack.push(identify(this.observable));
+    setStack(this.observable, this.stack);
   }
   private after() {
-    Wrapper.stack.pop();
+    this.stack && this.stack.pop();
   }
 
   _next(value: T) {
-    this.notifyHook(NotificationKind.Next, value);
     this.before();
+    this.notifyHook(NotificationKind.Next, value);
     this.destination.next && this.destination.next(value);
     this.after();
   }
 
   _error(err: any) {
+    this.before();
     this.notifyHook(NotificationKind.Error, {
       error: err,
       parsedStack: parseStackTrace(err.stack),
     });
-    this.before();
     this.destination.error && this.destination.error(err);
     this.after();
   }
 
   _complete() {
-    this.notifyHook(NotificationKind.Complete);
     this.before();
+    this.notifyHook(NotificationKind.Complete);
     this.destination.complete && this.destination.complete();
     this.after();
   }
 
   unsubscribe() {
-    this.notifyHook(NotificationKind.Unsubscribe);
     super.unsubscribe();
+    this.before();
+    this.notifyHook(NotificationKind.Unsubscribe);
+    this.after();
   }
 }
 

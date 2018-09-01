@@ -83,7 +83,7 @@ export const selectSticky = createSelector(selectObservablesState, getStricky);
 
 export const selectMaxFrameId = createSelector(
   selectCurrentObservableHistory,
-  h => h.first().frameId
+  h => (h.first() && h.first().stackId) || 0
 );
 
 function getSources(

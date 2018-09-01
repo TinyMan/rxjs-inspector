@@ -14,9 +14,14 @@ import {
   filter,
   takeUntil,
   withLatestFrom,
+  takeWhile,
 } from 'rxjs/operators';
 import { Action, Store, select } from '@ngrx/store';
-import { selectSticky, selectMaxFrameId } from '../store';
+import {
+  selectSticky,
+  selectMaxFrameId,
+  selectCurrentObservableHistory,
+} from '../store';
 import { StickyUpdateAction } from '../store/observables/action';
 import { Notif } from '@rxjs-inspector/core';
 
@@ -186,7 +191,7 @@ export class MarbleViewService {
   }
 
   public notifToPixel(n: Notif) {
-    return this.frameToPixel(n.frameId);
+    return this.frameToPixel(n.stackId || 0);
   }
   public frameToPixel(f: number) {
     return Math.round(this.getPointFromFrame(f));
